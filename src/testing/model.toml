@@ -20,3 +20,9 @@ role = "frontend"
 [servers.beta]
 ip = "10.0.0.2"
 role = "backend"
+
+# Line breaks are OK when inside arrays
+hosts = [
+  "alpha",
+  "omega"
+]
