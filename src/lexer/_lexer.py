@@ -32,7 +32,10 @@ states = (
 tokens = (
     'COMMENT',
     'DATE',
-    'TIME',
+    'DATE_TIME',
+    'ISO8601_DATE',
+    'RFC3339_DATE',
+    'LOCALDATE_TIME_MILLISECONDS',
     'FLOAT',
     'INTEGER',
     'BOOLEAN',
@@ -47,101 +50,104 @@ tokens = (
 
 t_ignore = ' \t'
 
-
-def t_COMMENT(t):
+def t_ANY_COMMENT(t):
     r'\#.*'
     pass
 
 
-def t_DATE(t):
+def t_ANY_DATE(t):
     r'\d{4}-\d{2}-\d{2}'
     t.value = datetime.datetime.strptime(t.value, '%Y-%m-%d').date()
     return t
 
 
-def t_LOCALDATE(t):
-    r'\d{4}-\d{2}-\d{2}'
-    t.value = datetime.datetime.strptime(t.value.group(0), '%Y-%m-%d').date()
-    return t
-
-
-def t_LOCALTIME(t):
+def t_ANY_LOCALTIME(t):
     r'\d{2}:\d{2}:\d{2}'
     t.value = datetime.datetime.strptime(t.value.group(0), '%H:%M:%S').time()
     return t
 
 
-def t_LOCALTIME_MILISECONDS(t):
+def t_ANY_LOCALTIME_MILISECONDS(t):
     r'\d{2}:\d{2}:\d{2}\.\d+'
     t.value = datetime.datetime.strptime(
         t.value.group(0), '%H:%M:%S.%f').time()
     return t
 
 
-def t_LOCALDATE_TIME(t):
+def t_ANY_DATE_TIME(t):
     r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}'
     t.value = datetime.datetime.strptime(t.value.group(0), '%Y-%m-%dT%H:%M:%S')
     return t
 
 
-def t_ISO8601_DATE(t):
+def t_ANY_ISO8601_DATE(t):
     r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z'
     t.value = datetime.datetime.strptime(
         t.value.group(0), '%Y-%m-%dT%H:%M:%SZ')
     return t
 
 
-def t_RFC3339_DATE(t):
+def t_ANY_RFC3339_DATE(t):
     r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z'
     t.value = datetime.datetime.strptime(t.value.group(0), '%Y-%m-%dT%H:%M:%S')
     return t
 
 
-def t_LOCALDATE_TIME_MILLISECONDS(t):
+def t_ANY_LOCALDATE_TIME_MILLISECONDS(t):
     r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+'
     t.value = datetime.datetime.strptime(
         t.value.group(0), '%Y-%m-%dT%H:%M:%S.%f')
     return t
 
 
-def t_FLOAT(t):
+def t_ANY_FLOAT(t):
     r"\d*\.\d+([eE][-+]?\d+)?"
     t.value = float(t.value)
     return t
 
 
-def t_INTEGER(t):
+def t_ANY_INTEGER(t):
     r"\d+"
     t.value = int(t.value)
     return t
 
 
-def t_BOOLEAN(t):
+def t_ANY_BOOLEAN(t):
     r"true|false"
     t.value = bool(t.value)
     return t
 
 
-def t_STRING(t):
+def t_ANY_STRING(t):
     r'"([^"\n]*)"?'
     t.value = t.value[1:-1]
     return t
 
-
-def t_TABLE_START(t):
+def t_default_TABLE_START(t):
     r"\[([\w\.-]+)\]"
     t.value = t.value[1:-1]
-    if t.lexer.current_state():
-        stack_control.increment()
-        t.lexer.push_state('table_child')
-    else:
-        stack_control.increment()
-        t.lexer.push_state('table')
+    stack_control.increment()
+    t.lexer.push_state('table')
+    return t
+
+def t_table_TABLE_START(t):
+    r"\[([\w\.-]+)\]"
+    t.value = t.value[1:-1]
+    stack_control.increment()
+    t.lexer.push_state('table_child')
+    return t
+
+def t_table_child_TABLE_START(t):
+    r"\[([\w\.-]+)\]"
+    t.value = t.value[1:-1]
+    stack_control.increment()
+    t.lexer.push_state('table_child')
     return t
 
 
 def t_TABLE_START_INLINE(t):
-    r'\{'
+    r'\{([\w\.-]+)\}'
+    t.value = t.value[1:-1]
     stack_control.increment()
     t.lexer.push_state('table')
     return t
@@ -181,6 +187,9 @@ def t_ARRAY_END(t):
     t.lexer.pop_state()
     return t
 
+def t_error(t):
+    print("Illegal character '%s'" % t.value[0])
+    t.lexer.skip(1)
 
 lexer = lex.lex()
 
@@ -209,8 +218,8 @@ role = "backend"
 """
 
 lexer.input(data)
-while True:
-    tok = lexer.token()
-    if not tok:
-        break
+
+while tok := lexer.token():
     print(tok)
+
+# print(parser.parse(texto_input, debug=True)) => debug no yacc
