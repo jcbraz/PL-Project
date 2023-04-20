@@ -25,9 +25,10 @@ class TableControl:
 
 table_control = TableControl()
 
+
 states = (
-    ("default", "exclusive"),
-    ("array", "exclusive"),
+    ("default", "inclusive"),
+    ("array", "inclusive"),
     ("table", "inclusive"),
     ("table_child", "inclusive"),
 
@@ -40,23 +41,38 @@ tokens = (
     'ISO8601_DATE',
     'RFC3339_DATE',
     'LOCALDATE_TIME_MILLISECONDS',
+    'LOCALTIME',
     'FLOAT',
     'INTEGER',
     'BOOLEAN',
     'STRING',
     'TABLE_START',
-    'TABLE_START_INLINE'
+    'TABLE_START_INLINE',
     'TABLE_END',
     'TABLE_END_INLINE',
     'ARRAY_START',
-    'ARRAY_END'
+    'ARRAY_END', 
+    'IDENTIFIER',
+    'LINE'
 )
 
 t_ignore = ' \t'
 
+
+
 def t_ANY_COMMENT(t):
     r'\#.*'
     pass
+
+def t_ANY_IDENTIFIER (t):
+    r"\[([\w\.-]+)\]"
+    t.value = t.value[1:-1]
+    return t
+
+def t_ANY_LINE (t):
+    r'[a-zA-Z0-9]*\s?=\s?([\'"])?.*[\'"]?\n'
+    t.value= t.value[1:-1]
+    return t
 
 
 def t_ANY_DATE(t):
@@ -64,12 +80,10 @@ def t_ANY_DATE(t):
     t.value = datetime.datetime.strptime(t.value, '%Y-%m-%d').date()
     return t
 
-
 def t_ANY_LOCALTIME(t):
     r'\d{2}:\d{2}:\d{2}'
-    t.value = datetime.datetime.strptime(t.value.group(0), '%H:%M:%S').time()
+    t.value = datetime.datetime.strptime(t.value, '%H:%M:%S').time()
     return t
-
 
 def t_ANY_LOCALTIME_MILISECONDS(t):
     r'\d{2}:\d{2}:\d{2}\.\d+'
@@ -123,7 +137,7 @@ def t_ANY_BOOLEAN(t):
 
 
 def t_ANY_STRING(t):
-    r'"([^"\n]*)"?'
+    r'"(?:[^"\\]|\\.)*"'
     t.value = t.value[1:-1]
     return t
 
@@ -162,13 +176,13 @@ def t_TABLE_START_INLINE(t):
     return t
 
 
-def t_ARRAY_START(t):
+def t_array_ARRAY_START(t):
     r'\=\s?\['
     t.lexer.push_state('array')
     return t
 
 
-def t_ARRAY_END(t):
+def t_array_ARRAY_END(t):
     r'\]'
     t.lexer.pop_state()
     return t
