@@ -59,18 +59,17 @@ tokens = (
 t_ignore = ' \t'
 
 
-
 def t_ANY_COMMENT(t):
     r'\#.*'
     pass
 
-def t_ANY_IDENTIFIER (t):
-    r"\[([\w\.-]+)\]"
-    t.value = t.value[1:-1]
-    return t
+# def t_ANY_IDENTIFIER (t):
+#     r"\[([\w\.-]+)\]"
+#     t.value = t.value[1:-1]
+#     return t
 
 def t_ANY_LINE (t):
-    r'[a-zA-Z0-9]*\s?=\s?([\'"])?.*[\'"]?\n'
+    r'[a-zA-Z0-9]*\s?=\s?([\'"])?.*[\'"]?'
     t.value= t.value[1:-1]
     return t
 
@@ -142,32 +141,36 @@ def t_ANY_STRING(t):
     return t
 
 def t_default_TABLE_START(t):
-    r"\[([\w\.-]+)\]"
-    t.value = t.value[1:-1]
+    r"\["
     table_control.setter(1)
     t.lexer.begin('table')
+
+def t_table_IDENTIFIER(t):
+    r'\[[a-zA-Z0-9]+\]'
+    t.value = t.value[1:-1]
     return t
 
-
 def t_table_TABLE_START(t):
-    r"\[([\w\.-]+)\]"
+    r"\["
     title = table_control.get_table_title(t.value[1:-1])
-    t.value = title
     if (len(title) > 1):
         table_control.setter(len(title))
         t.lexer.begin('table_child')
+
+def t_table_child_IDENTIFIER(t):
+    r'[a-zA-Z0-9]+\]'
+    t.value = t.value[:-1]
     return t
 
 def t_table_child_TABLE_START(t):
-    r"\[([\w\.-]+)\]"
+    r"\["
     table_title = table_control.get_table_title(t.value[1:-1])
-    t.value = table_title
     if (len(table_title) > 1):
         table_control.setter(len(table_title))
     else:
         table_control.setter(1)
         t.lexer.begin('table')
-    return t
+
 
 def t_TABLE_START_INLINE(t):
     r'\{([\w\.-]+)\}'
@@ -194,6 +197,7 @@ def t_error(t):
 lexer = lex.lex()
 
 data = """
+# This is a TOML document. Boom.
 title = "TOML Example"
 
 [owner]
