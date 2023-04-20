@@ -2,25 +2,28 @@ import ply.lex as lex
 import datetime
 
 
-class StackControl:
+class TableControl:
     def __init__(self):
-        self.var = 0
+        self.indentifier_control = 0
 
     def increment(self):
-        self.counter += 1
+        self.indentifier_control += 1
 
     def decrement(self):
-        self.counter -= 1
+        self.indentifier_control -= 1
 
-    def get(self):
-        return self.counter
+    def getIdentifierControl(self):
+        return self.indentifier_control
+    
+    def setter(self, value):
+        self.indentifier_control = value
 
     def get_table_title(t):
         title = t.split('.')
         return title
 
 
-stack_control = StackControl()
+table_control = TableControl()
 
 states = (
     ("default", "exclusive"),
@@ -127,44 +130,35 @@ def t_ANY_STRING(t):
 def t_default_TABLE_START(t):
     r"\[([\w\.-]+)\]"
     t.value = t.value[1:-1]
+    table_control.setter(1)
     t.lexer.begin('table')
     return t
 
 
 def t_table_TABLE_START(t):
     r"\[([\w\.-]+)\]"
-    t.value = t.value[1:-1]
-    t.lexer.begin('table')
+    title = table_control.get_table_title(t.value[1:-1])
+    t.value = title
+    if (len(title) > 1):
+        table_control.setter(len(title))
+        t.lexer.begin('table_child')
     return t
 
 def t_table_child_TABLE_START(t):
     r"\[([\w\.-]+)\]"
-    table_title = stack_control.get_table_title(t.value[1:-1])
-    if (len(table_title)>1):
-        t.lexer.begin('table_child')
+    table_title = table_control.get_table_title(t.value[1:-1])
+    t.value = table_title
+    if (len(table_title) > 1):
+        table_control.setter(len(table_title))
+    else:
+        table_control.setter(1)
+        t.lexer.begin('table')
     return t
-
-
-def t_table_TABLE_END(t):
-    r"\[([\w\.-]+)\]"
-    if ()
-
-def t_table_child_TABLE_END(t):
-    r"\[([\w\.-]+)\]"
-    table_title = stack_control.get_table_title(t.value[1:-1])
-    for _ in range(stack_control.get()-length(table_title)):
-            stack_control.decrement()
-            t.lexer.pop_state()
 
 def t_TABLE_START_INLINE(t):
     r'\{([\w\.-]+)\}'
     t.value = t.value[1:-1]
     t.lexer.push_state('table')
-    return t
-
-def t_TABLE_END_INLINE(t):
-    r'\}'
-    t.lexer.pop_state()
     return t
 
 
