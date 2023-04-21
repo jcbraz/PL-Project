@@ -27,8 +27,8 @@ states = (
 )
 
 tokens = (
-    'KEY',
     'EQUAL',
+    'VARIABLE',
     'STRING',
     'INTEGER',
     'FLOAT',
@@ -43,7 +43,8 @@ tokens = (
     'COMMENT',
     'DATE',
     'TABLE_HEADER',
-    'CHILD_HEADER'
+    'CHILD_HEADER',
+    'ARRAY_TABLES_HEADER',
 )
 
 table_control = TableControl()
@@ -68,9 +69,18 @@ def t_ANY_DATE(t):
     r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}([+-]\d{2}:\d{2})?'
     return t
 
-# Update the regular expression for keys
-def t_ANY_KEY(t):
-    r'([a-zA-Z_][a-zA-Z_0-9]*(\.[a-zA-Z_][a-zA-Z_0-9]*)*)|("[^"]+")'
+
+def t_ANY_VARIABLE(t):
+    r'\w+\s?='
+    if t.value[-2] == ' ':
+        t.value = t.value[:-2]
+    else:
+        t.value = t.value[:-1]
+    return t
+
+def t_ANY_STRING(t):
+    r'"([^"\\]|\\.)*"'
+    t.value = t.value[1:-1]
     return t
 
 def t_ANY_INTEGER(t):
@@ -98,6 +108,12 @@ def t_TABLE_HEADER(t):
     t.value = t.value[1:-1]
     t.lexer.begin('table')
     table_control.setter(1)
+    return t
+
+def t_ARRAY_TABLES_HEADER(t):
+    r'\[\[[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]*)*\]\]'
+    t.value = t.value[2:-2]
+    t.lexer.begin('array')
     return t
 
 def t_table_TABLE_HEADER(t):
@@ -139,7 +155,7 @@ dob = 1979-05-27T07:32:00-08:00
 
 [database]
 enabled = true
-ports = [ 8000, 8001, 8002 ]
+ports = [ 8000, true, 8002 ]
 data = [ ["delta", "phi"], [3.14] ]
 temp_targets = { cpu = 79.5, case = 72.0 }
 
@@ -152,6 +168,8 @@ role = "frontend"
 [servers.beta]
 ip = "10.0.0.2"
 role = "backend"
+
+[[products.dizes.dizes]]
 """
 
 lexer.input(data)
