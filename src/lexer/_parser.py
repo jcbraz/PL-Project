@@ -26,13 +26,13 @@ def p_toml(p):
 def p_array_tables(p):
     '''array_tables : ARRAY_TABLES_HEADER content
                     | ARRAY_TABLES_HEADER array_tables'''
-    p[0] = (p[1], p[2])
+    p[0] = p[1] + p[2]
 
 
 def p_child(p):
     '''child : CHILD_HEADER content
              | CHILD_HEADER child'''
-    p[0] = (p[1], p[2])
+    p[0] = p[1] + p[2]
 
 
 def p_inline_table(p):
@@ -47,42 +47,42 @@ def p_inline_table(p):
 def p_table(p):
     '''table : TABLE_HEADER content
              | TABLE_HEADER child'''
-    p[0] = (p[1], p[2])
+    p[0] = p[1] + p[2]
 
 
 def p_content(p):
     '''content : assignment
                | content assignment
-               |'''  # empty
+               | empty'''  # empty
     if len(p) == 3:
         p[0] = p[1] + [p[2]]
-    elif len(p) == 2:
-        p[0] = [p[1]]
+    else:
+        p[0] = p[1]
 
 
 def p_assignment(p):
     '''assignment : VARIABLE EQUAL value
                   | VARIABLE EQUAL array'''
-    p[0] = (p[1], p[3])
+    p[0] = p[3]
 
 
 def p_array(p):
     '''array : LBRACKET values RBRACKET
              | LBRACKET array RBRACKET
              | LBRACKET RBRACKET'''
-    if len(p) == 4:
-        p[0] = p[2]
-    else:
+    if len(p) == 2:
         p[0] = []
+    else:
+        p[0] = [p[2]]
 
 
 def p_values(p):
-    '''values : value COMMA values
+    '''values : values COMMA value
               | value'''
-    if len(p) == 4:
-        p[0] = [p[1]] + p[3]
-    else:
+    if len(p) == 2:
         p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[3]]
 
 
 def p_value(p):
