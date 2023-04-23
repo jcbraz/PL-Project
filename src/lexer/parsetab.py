@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ARRAY_TABLES_HEADER BOOLEAN CHILD_HEADER COMMA COMMENT DATE DOT EQUAL FLOAT INTEGER LBRACKET LCURLY NEWLINE RBRACKET RCURLY SPACE STRING TABLE_HEADER VARIABLEdocument : toml\n                | toml documenttoml : content\n            | array\n            | table\n            | inline_table\n            | array_tablesarray_tables : ARRAY_TABLES_HEADER content\n                    | ARRAY_TABLES_HEADER array_tableschild : CHILD_HEADER content\n             | CHILD_HEADER childinline_table : LCURLY content RCURLY\n                    | LCURLY RCURLYtable : TABLE_HEADER content\n             | TABLE_HEADER childcontent : assignment\n               | content assignment\n               |assignment : VARIABLE EQUAL value\n                  | VARIABLE SPACE EQUAL SPACE value\n                  | VARIABLE EQUAL arrayarray : LBRACKET values RBRACKET\n             | LBRACKET array RBRACKET\n             | LBRACKET RBRACKETvalues : value COMMA values\n              | valuevalue : STRING\n             | INTEGER\n             | FLOAT\n             | BOOLEAN\n             | DATE'
+_lr_signature = 'ARRAY_TABLES_HEADER BOOLEAN CHILD_HEADER COMMA COMMENT DATE DOT EQUAL FLOAT INTEGER LBRACKET LCURLY NEWLINE RBRACKET RCURLY SPACE STRING TABLE_HEADER VARIABLEdocument : toml\n                | toml documenttoml : content\n            | array\n            | table\n            | inline_table\n            | array_tablesarray_tables : ARRAY_TABLES_HEADER content\n                    | ARRAY_TABLES_HEADER array_tableschild : CHILD_HEADER content\n             | CHILD_HEADER childinline_table : LCURLY content RCURLY\n                    | LCURLY RCURLYtable : TABLE_HEADER content\n             | TABLE_HEADER childcontent : assignment\n               | content assignmentassignment : VARIABLE EQUAL value\n                  | VARIABLE EQUAL arrayarray : LBRACKET values RBRACKET\n             | LBRACKET array RBRACKET\n             | LBRACKET RBRACKETvalues : values COMMA value\n              | valuevalue : STRING\n             | INTEGER\n             | FLOAT\n             | BOOLEAN\n             | DATE'
     
-_lr_action_items = {'VARIABLE':([0,2,3,4,5,6,7,8,10,11,12,15,17,20,21,22,23,24,25,26,27,28,29,30,31,34,35,37,38,39,40,41,45,],[13,13,13,-4,-5,-6,-7,-16,13,13,13,-17,-24,-27,-28,-29,-30,-31,13,-15,13,13,-13,13,-9,-22,-23,13,-11,-12,-19,-21,-20,]),'LBRACKET':([0,2,3,4,5,6,7,8,9,10,12,15,17,20,21,22,23,24,25,26,27,29,30,31,32,34,35,37,38,39,40,41,45,],[9,9,-3,-4,-5,-6,-7,-16,9,-18,-18,-17,-24,-27,-28,-29,-30,-31,-14,-15,-18,-13,-8,-9,9,-22,-23,-10,-11,-12,-19,-21,-20,]),'TABLE_HEADER':([0,2,3,4,5,6,7,8,10,12,15,17,20,21,22,23,24,25,26,27,29,30,31,34,35,37,38,39,40,41,45,],[10,10,-3,-4,-5,-6,-7,-16,-18,-18,-17,-24,-27,-28,-29,-30,-31,-14,-15,-18,-13,-8,-9,-22,-23,-10,-11,-12,-19,-21,-20,]),'LCURLY':([0,2,3,4,5,6,7,8,10,12,15,17,20,21,22,23,24,25,26,27,29,30,31,34,35,37,38,39,40,41,45,],[11,11,-3,-4,-5,-6,-7,-16,-18,-18,-17,-24,-27,-28,-29,-30,-31,-14,-15,-18,-13,-8,-9,-22,-23,-10,-11,-12,-19,-21,-20,]),'ARRAY_TABLES_HEADER':([0,2,3,4,5,6,7,8,10,12,15,17,20,21,22,23,24,25,26,27,29,30,31,34,35,37,38,39,40,41,45,],[12,12,-3,-4,-5,-6,-7,-16,-18,12,-17,-24,-27,-28,-29,-30,-31,-14,-15,-18,-13,-8,-9,-22,-23,-10,-11,-12,-19,-21,-20,]),'$end':([0,1,2,3,4,5,6,7,8,10,12,14,15,17,20,21,22,23,24,25,26,27,29,30,31,34,35,37,38,39,40,41,45,],[-18,0,-1,-3,-4,-5,-6,-7,-16,-18,-18,-2,-17,-24,-27,-28,-29,-30,-31,-14,-15,-18,-13,-8,-9,-22,-23,-10,-11,-12,-19,-21,-20,]),'RCURLY':([8,11,15,17,20,21,22,23,24,28,34,35,40,41,45,],[-16,29,-17,-24,-27,-28,-29,-30,-31,39,-22,-23,-19,-21,-20,]),'RBRACKET':([9,16,17,18,19,20,21,22,23,24,34,35,43,],[17,34,-24,35,-26,-27,-28,-29,-30,-31,-22,-23,-25,]),'STRING':([9,32,36,44,],[20,20,20,20,]),'INTEGER':([9,32,36,44,],[21,21,21,21,]),'FLOAT':([9,32,36,44,],[22,22,22,22,]),'BOOLEAN':([9,32,36,44,],[23,23,23,23,]),'DATE':([9,32,36,44,],[24,24,24,24,]),'CHILD_HEADER':([10,27,],[27,27,]),'EQUAL':([13,33,],[32,42,]),'SPACE':([13,42,],[33,44,]),'COMMA':([19,20,21,22,23,24,],[36,-27,-28,-29,-30,-31,]),}
+_lr_action_items = {'LBRACKET':([0,2,3,4,5,6,7,8,9,15,17,20,21,22,23,24,25,26,29,30,31,32,33,35,36,37,38,39,40,],[9,9,-3,-4,-5,-6,-7,-16,9,-17,-22,-25,-26,-27,-28,-29,-14,-15,-13,-8,-9,9,-20,-21,-10,-11,-12,-18,-19,]),'TABLE_HEADER':([0,2,3,4,5,6,7,8,15,17,20,21,22,23,24,25,26,29,30,31,33,35,36,37,38,39,40,],[10,10,-3,-4,-5,-6,-7,-16,-17,-22,-25,-26,-27,-28,-29,-14,-15,-13,-8,-9,-20,-21,-10,-11,-12,-18,-19,]),'LCURLY':([0,2,3,4,5,6,7,8,15,17,20,21,22,23,24,25,26,29,30,31,33,35,36,37,38,39,40,],[11,11,-3,-4,-5,-6,-7,-16,-17,-22,-25,-26,-27,-28,-29,-14,-15,-13,-8,-9,-20,-21,-10,-11,-12,-18,-19,]),'ARRAY_TABLES_HEADER':([0,2,3,4,5,6,7,8,12,15,17,20,21,22,23,24,25,26,29,30,31,33,35,36,37,38,39,40,],[12,12,-3,-4,-5,-6,-7,-16,12,-17,-22,-25,-26,-27,-28,-29,-14,-15,-13,-8,-9,-20,-21,-10,-11,-12,-18,-19,]),'VARIABLE':([0,2,3,4,5,6,7,8,10,11,12,15,17,20,21,22,23,24,25,26,27,28,29,30,31,33,35,36,37,38,39,40,],[13,13,13,-4,-5,-6,-7,-16,13,13,13,-17,-22,-25,-26,-27,-28,-29,13,-15,13,13,-13,13,-9,-20,-21,13,-11,-12,-18,-19,]),'$end':([1,2,3,4,5,6,7,8,14,15,17,20,21,22,23,24,25,26,29,30,31,33,35,36,37,38,39,40,],[0,-1,-3,-4,-5,-6,-7,-16,-2,-17,-22,-25,-26,-27,-28,-29,-14,-15,-13,-8,-9,-20,-21,-10,-11,-12,-18,-19,]),'RCURLY':([8,11,15,17,20,21,22,23,24,28,33,35,39,40,],[-16,29,-17,-22,-25,-26,-27,-28,-29,38,-20,-21,-18,-19,]),'RBRACKET':([9,16,17,18,19,20,21,22,23,24,33,35,41,],[17,33,-22,35,-24,-25,-26,-27,-28,-29,-20,-21,-23,]),'STRING':([9,32,34,],[20,20,20,]),'INTEGER':([9,32,34,],[21,21,21,]),'FLOAT':([9,32,34,],[22,22,22,]),'BOOLEAN':([9,32,34,],[23,23,23,]),'DATE':([9,32,34,],[24,24,24,]),'CHILD_HEADER':([10,27,],[27,27,]),'EQUAL':([13,],[32,]),'COMMA':([16,19,20,21,22,23,24,41,],[34,-24,-25,-26,-27,-28,-29,-23,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'document':([0,2,],[1,14,]),'toml':([0,2,],[2,2,]),'content':([0,2,10,11,12,27,],[3,3,25,28,30,37,]),'array':([0,2,9,32,],[4,4,18,41,]),'table':([0,2,],[5,5,]),'inline_table':([0,2,],[6,6,]),'array_tables':([0,2,12,],[7,7,31,]),'assignment':([0,2,3,10,11,12,25,27,28,30,37,],[8,8,15,8,8,8,15,8,15,15,15,]),'values':([9,36,],[16,43,]),'value':([9,32,36,44,],[19,40,19,45,]),'child':([10,27,],[26,38,]),}
+_lr_goto_items = {'document':([0,2,],[1,14,]),'toml':([0,2,],[2,2,]),'content':([0,2,10,11,12,27,],[3,3,25,28,30,36,]),'array':([0,2,9,32,],[4,4,18,40,]),'table':([0,2,],[5,5,]),'inline_table':([0,2,],[6,6,]),'array_tables':([0,2,12,],[7,7,31,]),'assignment':([0,2,3,10,11,12,25,27,28,30,36,],[8,8,15,8,8,8,15,8,15,15,15,]),'values':([9,],[16,]),'value':([9,32,34,],[19,39,41,]),'child':([10,27,],[26,37,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -44,18 +44,16 @@ _lr_productions = [
   ('table -> TABLE_HEADER child','table',2,'p_table','_parser.py',49),
   ('content -> assignment','content',1,'p_content','_parser.py',54),
   ('content -> content assignment','content',2,'p_content','_parser.py',55),
-  ('content -> <empty>','content',0,'p_content','_parser.py',56),
-  ('assignment -> VARIABLE EQUAL value','assignment',3,'p_assignment','_parser.py',64),
-  ('assignment -> VARIABLE SPACE EQUAL SPACE value','assignment',5,'p_assignment','_parser.py',65),
-  ('assignment -> VARIABLE EQUAL array','assignment',3,'p_assignment','_parser.py',66),
-  ('array -> LBRACKET values RBRACKET','array',3,'p_array','_parser.py',71),
-  ('array -> LBRACKET array RBRACKET','array',3,'p_array','_parser.py',72),
-  ('array -> LBRACKET RBRACKET','array',2,'p_array','_parser.py',73),
-  ('values -> value COMMA values','values',3,'p_values','_parser.py',81),
-  ('values -> value','values',1,'p_values','_parser.py',82),
-  ('value -> STRING','value',1,'p_value','_parser.py',90),
-  ('value -> INTEGER','value',1,'p_value','_parser.py',91),
-  ('value -> FLOAT','value',1,'p_value','_parser.py',92),
-  ('value -> BOOLEAN','value',1,'p_value','_parser.py',93),
-  ('value -> DATE','value',1,'p_value','_parser.py',94),
+  ('assignment -> VARIABLE EQUAL value','assignment',3,'p_assignment','_parser.py',63),
+  ('assignment -> VARIABLE EQUAL array','assignment',3,'p_assignment','_parser.py',64),
+  ('array -> LBRACKET values RBRACKET','array',3,'p_array','_parser.py',69),
+  ('array -> LBRACKET array RBRACKET','array',3,'p_array','_parser.py',70),
+  ('array -> LBRACKET RBRACKET','array',2,'p_array','_parser.py',71),
+  ('values -> values COMMA value','values',3,'p_values','_parser.py',79),
+  ('values -> value','values',1,'p_values','_parser.py',80),
+  ('value -> STRING','value',1,'p_value','_parser.py',88),
+  ('value -> INTEGER','value',1,'p_value','_parser.py',89),
+  ('value -> FLOAT','value',1,'p_value','_parser.py',90),
+  ('value -> BOOLEAN','value',1,'p_value','_parser.py',91),
+  ('value -> DATE','value',1,'p_value','_parser.py',92),
 ]

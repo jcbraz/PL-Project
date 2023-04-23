@@ -52,8 +52,7 @@ def p_table(p):
 
 def p_content(p):
     '''content : assignment
-               | content assignment
-               | empty'''  # empty
+               | content assignment'''
     if len(p) == 3:
         p[0] = p[1] + [p[2]]
     else:
