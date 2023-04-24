@@ -1,8 +1,8 @@
 import ply.yacc as yacc
 import json
 
-# Import the tokens list from _new_lexer.py
-from _new_lexer import tokens
+import lexer
+from lexer import tokens
 
 
 def p_document(p):
