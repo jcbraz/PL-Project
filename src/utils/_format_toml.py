@@ -9,7 +9,7 @@ def sort_toml(toml_str: str):
     child_pattern = re.compile(r'\[\w+\.\w+\]')
     parent_buffer = []
     child_buffer = []
-    result = []
+    table_queue = []
 
     lines = toml_str.split('\n')
     for line in lines:
@@ -21,14 +21,14 @@ def sort_toml(toml_str: str):
             child_buffer.append(child_match.group(0))
 
     for parent in parent_buffer:
-        result.append(parent)
+        table_queue.append(parent)
         for child in child_buffer:
             parent_reference = child.split('.')[0]
             parent_reference = parent_reference.replace('[', '')
             if parent == parent_reference:
-                result.append(child[1:-1])
+                table_queue.append(child[1:-1])
 
-    for table in result:
+    for table in table_queue:
         if '.' in table:
             parent, child = table.split('.')
             if parent not in new_document:
