@@ -47,9 +47,17 @@ title = "TOML Example"
 enable = false
 ports = "undefined"
 
+[owner.dizes]
+name = "Dizes"
+dob = 1990-05-27T07:32:00-08:00
+
 [owner]
 name = "Tom Preston-Werner"
 dob = 1979-05-27T07:32:00-08:00
+
+[servers.dizes]
+ip = "321123"
+role = "data"
 
 [database]
 enabled = true
