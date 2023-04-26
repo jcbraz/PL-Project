@@ -1,7 +1,9 @@
+import sys
+sys.path.append('..')
 import ply.yacc as yacc
 import json
 
-from lexer import tokens
+from lexer._lexer import tokens
 
 def p_document(p):
     '''document : toml
@@ -58,8 +60,7 @@ def p_content(p):
 
 
 def p_assignment(p):
-    '''assignment : VARIABLE EQUAL value
-                  | VARIABLE EQUAL array'''
+    '''assignment : VARIABLE EQUAL value'''
     p[0] = p[3]
 
 
@@ -70,16 +71,16 @@ def p_array(p):
     if len(p) == 2:
         p[0] = []
     else:
-        p[0] = [p[2]]
+        p[0] = p[2]
 
 
 def p_values(p):
-    '''values : values COMMA value
+    '''values : value COMMA values
               | value'''
-    if len(p) == 2:
+    if len(p) == 1:
         p[0] = [p[1]]
-    else:
-        p[0] = p[1] + [p[3]]
+    elif len(p) == 4:
+        p[0] = [p[1]] + [p[3]]
 
 
 def p_value(p):
