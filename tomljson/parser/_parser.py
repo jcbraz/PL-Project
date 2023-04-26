@@ -1,13 +1,11 @@
 import ply.yacc as yacc
 import json
-
-import lexer
-from lexer import tokens
+from tomljson.lexer._lexer import tokens
 
 
 def p_document(p):
-    '''document : toml
-                | toml document'''
+    """document : toml
+    | toml document"""
     if len(p) == 3:
         p[0] = p[1] + p[2]
     else:
@@ -15,29 +13,29 @@ def p_document(p):
 
 
 def p_toml(p):
-    '''toml : content
-            | array
-            | table
-            | inline_table
-            | array_tables'''
+    """toml : content
+    | array
+    | table
+    | inline_table
+    | array_tables"""
     p[0] = p[1]
 
 
 def p_array_tables(p):
-    '''array_tables : ARRAY_TABLES_HEADER content
-                    | ARRAY_TABLES_HEADER array_tables'''
+    """array_tables : ARRAY_TABLES_HEADER content
+    | ARRAY_TABLES_HEADER array_tables"""
     p[0] = p[1] + p[2]
 
 
 def p_child(p):
-    '''child : CHILD_HEADER content
-             | CHILD_HEADER child'''
+    """child : CHILD_HEADER content
+    | CHILD_HEADER child"""
     p[0] = p[1] + p[2]
 
 
 def p_inline_table(p):
-    '''inline_table : LCURLY content RCURLY
-                    | LCURLY RCURLY'''
+    """inline_table : LCURLY content RCURLY
+    | LCURLY RCURLY"""
     if len(p) == 4:
         p[0] = p[2]
     else:
@@ -45,14 +43,14 @@ def p_inline_table(p):
 
 
 def p_table(p):
-    '''table : TABLE_HEADER content
-             | TABLE_HEADER child'''
+    """table : TABLE_HEADER content
+    | TABLE_HEADER child"""
     p[0] = p[1] + p[2]
 
 
 def p_content(p):
-    '''content : assignment
-               | content assignment'''
+    """content : assignment
+    | content assignment"""
     if len(p) == 3:
         p[0] = p[1] + [p[2]]
     else:
@@ -60,36 +58,35 @@ def p_content(p):
 
 
 def p_assignment(p):
-    '''assignment : VARIABLE EQUAL value
-                  | VARIABLE EQUAL array'''
+    """assignment : VARIABLE EQUAL value"""
     p[0] = p[3]
 
 
 def p_array(p):
-    '''array : LBRACKET values RBRACKET
-             | LBRACKET array RBRACKET
-             | LBRACKET RBRACKET'''
+    """array : LBRACKET values RBRACKET
+    | LBRACKET array RBRACKET
+    | LBRACKET RBRACKET"""
     if len(p) == 2:
         p[0] = []
     else:
-        p[0] = [p[2]]
+        p[0] = p[2]
 
 
 def p_values(p):
-    '''values : values COMMA value
-              | value'''
-    if len(p) == 2:
+    """values : value COMMA values
+    | value"""
+    if len(p) == 1:
         p[0] = [p[1]]
-    else:
-        p[0] = p[1] + [p[3]]
+    elif len(p) == 4:
+        p[0] = [p[1]] + [p[3]]
 
 
 def p_value(p):
-    '''value : STRING
-             | INTEGER
-             | FLOAT
-             | BOOLEAN
-             | DATE'''
+    """value : STRING
+    | INTEGER
+    | FLOAT
+    | BOOLEAN
+    | DATE"""
     p[0] = p[1]
 
 
