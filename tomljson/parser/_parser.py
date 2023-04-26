@@ -1,9 +1,6 @@
-import sys
-sys.path.append('..')
 import ply.yacc as yacc
 import json
-
-from lexer._lexer import tokens
+from tomljson.lexer._lexer import tokens 
 
 def p_document(p):
     '''document : toml
