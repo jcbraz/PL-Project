@@ -1,6 +1,7 @@
+import os
 import ply.yacc as yacc
-import json
 from tomljson.lexer._lexer import tokens
+from tomljson.utils._readfile import handlePath, readFile
 
 
 def p_document(p):
@@ -99,30 +100,43 @@ def p_error(p):
 
 parser = yacc.yacc()
 
-data = """
-# This is a TOML document. Boom.
-title = "TOML Example"
 
-[owner]
-name = "Tom Preston-Werner"
-dob = 1979-05-27T07:32:00-08:00
+dirname = os.path.dirname(__file__)
+abs_path = os.path.abspath(dirname)
 
-[database]
-enabled = true
-ports = [ 8000, 8001, 8002 ]
-data = [ ["delta", "phi"], [3.14] ]
-temp_targets = { cpu = 79.5, case = 72.0 }
+handledPath = handlePath('../../model.toml')
 
-[servers]
+filepath = os.path.join(abs_path, handledPath[0])
 
-[servers.alpha]
-ip = "10.0.0.1"
-role = "frontend"
+for i in range(1, len(handledPath)):
+    filepath = os.path.join(filepath, handledPath[i])
 
-[servers.beta]
-ip = "10.0.0.2"
-role = "backend"
-"""
+data = readFile(filepath)
+
+# data = """
+# # This is a TOML document. Boom.
+# title = "TOML Example"
+
+# [owner]
+# name = "Tom Preston-Werner"
+# dob = 1979-05-27T07:32:00-08:00
+
+# [database]
+# enabled = true
+# ports = [ 8000, 8001, 8002 ]
+# data = [ ["delta", "phi"], [3.14] ]
+# temp_targets = { cpu = 79.5, case = 72.0 }
+
+# [servers]
+
+# [servers.alpha]
+# ip = "10.0.0.1"
+# role = "frontend"
+
+# [servers.beta]
+# ip = "10.0.0.2"
+# role = "backend"
+# """
 
 
 result = parser.parse(data)
