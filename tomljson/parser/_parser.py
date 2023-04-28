@@ -46,26 +46,28 @@ def p_inline_table(p):
 def p_table(p):
     """table : TABLE_HEADER content
     | TABLE_HEADER child"""
-    p[0] = p[1] + p[2]
+    p[0] = [p[1]].append(p[2])
 
 
 def p_content(p):
     """content : assignment
     | content assignment"""
     if len(p) == 3:
-        p[0] = p[1] + [p[2]]
+        p[0] = [p[1]].append(p[2])
     else:
         p[0] = p[1]
 
 
 def p_assignment(p):
-    """assignment : VARIABLE EQUAL value"""
-    p[0] = p[3]
+    """assignment : VARIABLE value
+    | VARIABLE array
+    | VARIABLE inline_table"""
+    p[0] = p[2]
 
 
 def p_array(p):
-    """array : LBRACKET values RBRACKET
-    | LBRACKET array RBRACKET
+    """array : LBRACKET array RBRACKET
+    | LBRACKET values RBRACKET
     | LBRACKET RBRACKET"""
     if len(p) == 2:
         p[0] = []
@@ -79,7 +81,7 @@ def p_values(p):
     if len(p) == 1:
         p[0] = [p[1]]
     elif len(p) == 4:
-        p[0] = [p[1]] + [p[3]]
+        p[0] = [p[3]].append(p[1])
 
 
 def p_value(p):
@@ -104,7 +106,7 @@ parser = yacc.yacc()
 dirname = os.path.dirname(__file__)
 abs_path = os.path.abspath(dirname)
 
-handledPath = handlePath('../../model.toml')
+handledPath = handlePath("../../model.toml")
 
 filepath = os.path.join(abs_path, handledPath[0])
 
@@ -113,5 +115,5 @@ for i in range(1, len(handledPath)):
 
 data = readFile(filepath)
 
-result = parser.parse(data)
+result = parser.parse(data, debug=True)
 print(parser.parse(data))

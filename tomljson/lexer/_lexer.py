@@ -28,7 +28,6 @@ tokens = (
     "ARRAY_TABLES_HEADER",
 )
 
-# table_control = TableControl()
 
 t_EQUAL = r"="
 t_LBRACKET = r"\["
@@ -55,7 +54,7 @@ def t_ANY_DATE(t):
 
 
 def t_ANY_VARIABLE(t):
-    r"\w+\s?="
+    r"\w+\s?=\s?"
     if t.value[-2] == " ":
         t.value = t.value[:-2]
     else:
@@ -63,12 +62,11 @@ def t_ANY_VARIABLE(t):
     return t
 
 
-# def t_ANY_STRING(t):
-#     r'"([^"\\]|\\.)*"'
-#     return t
 def t_ANY_STRING(t):
-    r"[\"'](?:\s?\w+)+[\"']"
+    r"[\"'](?:\W?[a-zA-Z0-9])+[\"']"
+    t.value = t.value[1:-1]
     return t
+
 
 def t_ANY_INTEGER(t):
     r"\d+"
