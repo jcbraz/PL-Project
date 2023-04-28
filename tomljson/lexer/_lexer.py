@@ -1,7 +1,6 @@
 import ply.lex as lex
 
 states = (
-    ("array", "inclusive"),
     ("table", "inclusive"),
     ("child", "inclusive"),
 )
@@ -54,7 +53,7 @@ def t_ANY_DATE(t):
 
 
 def t_ANY_VARIABLE(t):
-    r"\w+\s?=\s?"
+    r"[a-zA-Z0-9_]+\s?=\s?"
     if t.value[-2] == " ":
         t.value = t.value[:-2]
     else:

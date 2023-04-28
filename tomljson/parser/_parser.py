@@ -2,6 +2,7 @@ import os
 import ply.yacc as yacc
 from tomljson.lexer._lexer import tokens
 from tomljson.utils._readfile import handlePath, readFile
+from tomljson.utils._format_toml import handleTableArrayFormat
 
 
 def p_document(p):
@@ -29,13 +30,12 @@ def p_array_tables(p):
 
 
 def p_child(p):
-    """child : CHILD_HEADER content
-    | CHILD_HEADER child"""
-    p[0] = p[1] + p[2]
+    """child : CHILD_HEADER content"""
+    p[0] = [p[1]].append(p[2])
 
 
 def p_inline_table(p):
-    """inline_table : LCURLY content RCURLY
+    """inline_table : LCURLY contents RCURLY
     | LCURLY RCURLY"""
     if len(p) == 4:
         p[0] = p[2]
@@ -48,6 +48,14 @@ def p_table(p):
     | TABLE_HEADER child"""
     p[0] = [p[1]].append(p[2])
 
+
+def p_contents(p):
+    """contents : contents COMMA content
+    | content"""
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = [p[1]].append(p[3])
 
 def p_content(p):
     """content : assignment
@@ -66,13 +74,12 @@ def p_assignment(p):
 
 
 def p_array(p):
-    """array : LBRACKET array RBRACKET
-    | LBRACKET values RBRACKET
+    """array : DOT LBRACKET values RBRACKET
     | LBRACKET RBRACKET"""
     if len(p) == 2:
         p[0] = []
     else:
-        p[0] = p[2]
+        p[0] = p[3]
 
 
 def p_values(p):
@@ -113,7 +120,7 @@ filepath = os.path.join(abs_path, handledPath[0])
 for i in range(1, len(handledPath)):
     filepath = os.path.join(filepath, handledPath[i])
 
-data = readFile(filepath)
+data = handleTableArrayFormat(readFile(filepath))
 
-result = parser.parse(data, debug=True)
+result = parser.parse(data)
 print(parser.parse(data))
