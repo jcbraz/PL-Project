@@ -63,10 +63,12 @@ def t_ANY_VARIABLE(t):
     return t
 
 
+# def t_ANY_STRING(t):
+#     r'"([^"\\]|\\.)*"'
+#     return t
 def t_ANY_STRING(t):
-    r'"([^"\\]|\\.)*"'
+    r"[\"'](?:\s?\w+)+[\"']"
     return t
-
 
 def t_ANY_INTEGER(t):
     r"\d+"
