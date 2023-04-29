@@ -94,8 +94,7 @@ def p_values(p):
 
 def p_value(p):
     """value : STRING
-    | INTEGER
-    | FLOAT
+    | NUMBER
     | BOOLEAN
     | DATE"""
     p[0] = p[1]
@@ -123,5 +122,5 @@ for i in range(1, len(handledPath)):
 
 data = handleTableArrayFormat(readFile(filepath))
 
-result = parser.parse(data, debug=True)
+result = parser.parse(data)
 print(parser.parse(data))

@@ -37,26 +37,24 @@ Rule 24    array -> DOT LBRACKET RBRACKET
 Rule 25    values -> value COMMA values
 Rule 26    values -> value
 Rule 27    value -> STRING
-Rule 28    value -> INTEGER
-Rule 29    value -> FLOAT
-Rule 30    value -> BOOLEAN
-Rule 31    value -> DATE
+Rule 28    value -> NUMBER
+Rule 29    value -> BOOLEAN
+Rule 30    value -> DATE
 
 Terminals, with rules where they appear
 
 ARRAY_TABLES_HEADER  : 8 9
-BOOLEAN              : 30
+BOOLEAN              : 29
 CHILD_HEADER         : 10
 COMMA                : 15 25
 COMMENT              : 
-DATE                 : 31
+DATE                 : 30
 DOT                  : 22 23 24
 EQUAL                : 
-FLOAT                : 29
-INTEGER              : 28
 LBRACKET             : 22 23 24
 LCURLY               : 11 12
 NEWLINE              : 
+NUMBER               : 28
 RBRACKET             : 22 23 24
 RCURLY               : 11 12
 SPACE                : 
@@ -323,10 +321,9 @@ state 13
     (20) assignment -> VARIABLE . array
     (21) assignment -> VARIABLE . inline_table
     (27) value -> . STRING
-    (28) value -> . INTEGER
-    (29) value -> . FLOAT
-    (30) value -> . BOOLEAN
-    (31) value -> . DATE
+    (28) value -> . NUMBER
+    (29) value -> . BOOLEAN
+    (30) value -> . DATE
     (22) array -> . DOT LBRACKET array RBRACKET
     (23) array -> . DOT LBRACKET values RBRACKET
     (24) array -> . DOT LBRACKET RBRACKET
@@ -334,10 +331,9 @@ state 13
     (12) inline_table -> . LCURLY RCURLY
 
     STRING          shift and go to state 28
-    INTEGER         shift and go to state 29
-    FLOAT           shift and go to state 30
-    BOOLEAN         shift and go to state 31
-    DATE            shift and go to state 32
+    NUMBER          shift and go to state 29
+    BOOLEAN         shift and go to state 30
+    DATE            shift and go to state 31
     DOT             shift and go to state 9
     LCURLY          shift and go to state 11
 
@@ -377,22 +373,20 @@ state 16
     (25) values -> . value COMMA values
     (26) values -> . value
     (27) value -> . STRING
-    (28) value -> . INTEGER
-    (29) value -> . FLOAT
-    (30) value -> . BOOLEAN
-    (31) value -> . DATE
+    (28) value -> . NUMBER
+    (29) value -> . BOOLEAN
+    (30) value -> . DATE
 
-    RBRACKET        shift and go to state 34
+    RBRACKET        shift and go to state 33
     DOT             shift and go to state 9
     STRING          shift and go to state 28
-    INTEGER         shift and go to state 29
-    FLOAT           shift and go to state 30
-    BOOLEAN         shift and go to state 31
-    DATE            shift and go to state 32
+    NUMBER          shift and go to state 29
+    BOOLEAN         shift and go to state 30
+    DATE            shift and go to state 31
 
-    array                          shift and go to state 33
-    values                         shift and go to state 35
-    value                          shift and go to state 36
+    array                          shift and go to state 32
+    values                         shift and go to state 34
+    value                          shift and go to state 35
 
 state 17
 
@@ -437,7 +431,7 @@ state 19
 
     VARIABLE        shift and go to state 13
 
-    content                        shift and go to state 37
+    content                        shift and go to state 36
     assignment                     shift and go to state 8
 
 state 20
@@ -445,8 +439,8 @@ state 20
     (11) inline_table -> LCURLY contents . RCURLY
     (15) contents -> contents . COMMA content
 
-    RCURLY          shift and go to state 38
-    COMMA           shift and go to state 39
+    RCURLY          shift and go to state 37
+    COMMA           shift and go to state 38
 
 
 state 21
@@ -568,72 +562,57 @@ state 28
 
 state 29
 
-    (28) value -> INTEGER .
+    (28) value -> NUMBER .
 
-    VARIABLE        reduce using rule 28 (value -> INTEGER .)
-    DOT             reduce using rule 28 (value -> INTEGER .)
-    TABLE_HEADER    reduce using rule 28 (value -> INTEGER .)
-    LCURLY          reduce using rule 28 (value -> INTEGER .)
-    ARRAY_TABLES_HEADER reduce using rule 28 (value -> INTEGER .)
-    $end            reduce using rule 28 (value -> INTEGER .)
-    RCURLY          reduce using rule 28 (value -> INTEGER .)
-    COMMA           reduce using rule 28 (value -> INTEGER .)
-    RBRACKET        reduce using rule 28 (value -> INTEGER .)
+    VARIABLE        reduce using rule 28 (value -> NUMBER .)
+    DOT             reduce using rule 28 (value -> NUMBER .)
+    TABLE_HEADER    reduce using rule 28 (value -> NUMBER .)
+    LCURLY          reduce using rule 28 (value -> NUMBER .)
+    ARRAY_TABLES_HEADER reduce using rule 28 (value -> NUMBER .)
+    $end            reduce using rule 28 (value -> NUMBER .)
+    RCURLY          reduce using rule 28 (value -> NUMBER .)
+    COMMA           reduce using rule 28 (value -> NUMBER .)
+    RBRACKET        reduce using rule 28 (value -> NUMBER .)
 
 
 state 30
 
-    (29) value -> FLOAT .
+    (29) value -> BOOLEAN .
 
-    VARIABLE        reduce using rule 29 (value -> FLOAT .)
-    DOT             reduce using rule 29 (value -> FLOAT .)
-    TABLE_HEADER    reduce using rule 29 (value -> FLOAT .)
-    LCURLY          reduce using rule 29 (value -> FLOAT .)
-    ARRAY_TABLES_HEADER reduce using rule 29 (value -> FLOAT .)
-    $end            reduce using rule 29 (value -> FLOAT .)
-    RCURLY          reduce using rule 29 (value -> FLOAT .)
-    COMMA           reduce using rule 29 (value -> FLOAT .)
-    RBRACKET        reduce using rule 29 (value -> FLOAT .)
+    VARIABLE        reduce using rule 29 (value -> BOOLEAN .)
+    DOT             reduce using rule 29 (value -> BOOLEAN .)
+    TABLE_HEADER    reduce using rule 29 (value -> BOOLEAN .)
+    LCURLY          reduce using rule 29 (value -> BOOLEAN .)
+    ARRAY_TABLES_HEADER reduce using rule 29 (value -> BOOLEAN .)
+    $end            reduce using rule 29 (value -> BOOLEAN .)
+    RCURLY          reduce using rule 29 (value -> BOOLEAN .)
+    COMMA           reduce using rule 29 (value -> BOOLEAN .)
+    RBRACKET        reduce using rule 29 (value -> BOOLEAN .)
 
 
 state 31
 
-    (30) value -> BOOLEAN .
+    (30) value -> DATE .
 
-    VARIABLE        reduce using rule 30 (value -> BOOLEAN .)
-    DOT             reduce using rule 30 (value -> BOOLEAN .)
-    TABLE_HEADER    reduce using rule 30 (value -> BOOLEAN .)
-    LCURLY          reduce using rule 30 (value -> BOOLEAN .)
-    ARRAY_TABLES_HEADER reduce using rule 30 (value -> BOOLEAN .)
-    $end            reduce using rule 30 (value -> BOOLEAN .)
-    RCURLY          reduce using rule 30 (value -> BOOLEAN .)
-    COMMA           reduce using rule 30 (value -> BOOLEAN .)
-    RBRACKET        reduce using rule 30 (value -> BOOLEAN .)
+    VARIABLE        reduce using rule 30 (value -> DATE .)
+    DOT             reduce using rule 30 (value -> DATE .)
+    TABLE_HEADER    reduce using rule 30 (value -> DATE .)
+    LCURLY          reduce using rule 30 (value -> DATE .)
+    ARRAY_TABLES_HEADER reduce using rule 30 (value -> DATE .)
+    $end            reduce using rule 30 (value -> DATE .)
+    RCURLY          reduce using rule 30 (value -> DATE .)
+    COMMA           reduce using rule 30 (value -> DATE .)
+    RBRACKET        reduce using rule 30 (value -> DATE .)
 
 
 state 32
 
-    (31) value -> DATE .
+    (22) array -> DOT LBRACKET array . RBRACKET
 
-    VARIABLE        reduce using rule 31 (value -> DATE .)
-    DOT             reduce using rule 31 (value -> DATE .)
-    TABLE_HEADER    reduce using rule 31 (value -> DATE .)
-    LCURLY          reduce using rule 31 (value -> DATE .)
-    ARRAY_TABLES_HEADER reduce using rule 31 (value -> DATE .)
-    $end            reduce using rule 31 (value -> DATE .)
-    RCURLY          reduce using rule 31 (value -> DATE .)
-    COMMA           reduce using rule 31 (value -> DATE .)
-    RBRACKET        reduce using rule 31 (value -> DATE .)
+    RBRACKET        shift and go to state 39
 
 
 state 33
-
-    (22) array -> DOT LBRACKET array . RBRACKET
-
-    RBRACKET        shift and go to state 40
-
-
-state 34
 
     (24) array -> DOT LBRACKET RBRACKET .
 
@@ -648,23 +627,23 @@ state 34
     RBRACKET        reduce using rule 24 (array -> DOT LBRACKET RBRACKET .)
 
 
-state 35
+state 34
 
     (23) array -> DOT LBRACKET values . RBRACKET
 
-    RBRACKET        shift and go to state 41
+    RBRACKET        shift and go to state 40
 
 
-state 36
+state 35
 
     (25) values -> value . COMMA values
     (26) values -> value .
 
-    COMMA           shift and go to state 42
+    COMMA           shift and go to state 41
     RBRACKET        reduce using rule 26 (values -> value .)
 
 
-state 37
+state 36
 
     (10) child -> CHILD_HEADER content .
     (18) content -> content . assignment
@@ -684,7 +663,7 @@ state 37
 
     assignment                     shift and go to state 15
 
-state 38
+state 37
 
     (11) inline_table -> LCURLY contents RCURLY .
 
@@ -698,7 +677,7 @@ state 38
     COMMA           reduce using rule 11 (inline_table -> LCURLY contents RCURLY .)
 
 
-state 39
+state 38
 
     (15) contents -> contents COMMA . content
     (17) content -> . assignment
@@ -709,10 +688,10 @@ state 39
 
     VARIABLE        shift and go to state 13
 
-    content                        shift and go to state 43
+    content                        shift and go to state 42
     assignment                     shift and go to state 8
 
-state 40
+state 39
 
     (22) array -> DOT LBRACKET array RBRACKET .
 
@@ -727,7 +706,7 @@ state 40
     RBRACKET        reduce using rule 22 (array -> DOT LBRACKET array RBRACKET .)
 
 
-state 41
+state 40
 
     (23) array -> DOT LBRACKET values RBRACKET .
 
@@ -742,27 +721,25 @@ state 41
     RBRACKET        reduce using rule 23 (array -> DOT LBRACKET values RBRACKET .)
 
 
-state 42
+state 41
 
     (25) values -> value COMMA . values
     (25) values -> . value COMMA values
     (26) values -> . value
     (27) value -> . STRING
-    (28) value -> . INTEGER
-    (29) value -> . FLOAT
-    (30) value -> . BOOLEAN
-    (31) value -> . DATE
+    (28) value -> . NUMBER
+    (29) value -> . BOOLEAN
+    (30) value -> . DATE
 
     STRING          shift and go to state 28
-    INTEGER         shift and go to state 29
-    FLOAT           shift and go to state 30
-    BOOLEAN         shift and go to state 31
-    DATE            shift and go to state 32
+    NUMBER          shift and go to state 29
+    BOOLEAN         shift and go to state 30
+    DATE            shift and go to state 31
 
-    value                          shift and go to state 36
-    values                         shift and go to state 44
+    value                          shift and go to state 35
+    values                         shift and go to state 43
 
-state 43
+state 42
 
     (15) contents -> contents COMMA content .
     (18) content -> content . assignment
@@ -776,7 +753,7 @@ state 43
 
     assignment                     shift and go to state 15
 
-state 44
+state 43
 
     (25) values -> value COMMA values .
 
@@ -788,4 +765,4 @@ WARNING:
 WARNING: shift/reduce conflict for VARIABLE in state 3 resolved as shift
 WARNING: shift/reduce conflict for VARIABLE in state 17 resolved as shift
 WARNING: shift/reduce conflict for VARIABLE in state 23 resolved as shift
-WARNING: shift/reduce conflict for VARIABLE in state 37 resolved as shift
+WARNING: shift/reduce conflict for VARIABLE in state 36 resolved as shift
