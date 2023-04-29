@@ -9,8 +9,7 @@ tokens = (
     "EQUAL",
     "VARIABLE",
     "STRING",
-    "INTEGER",
-    "FLOAT",
+    "NUMBER",
     "BOOLEAN",
     "DATE",
     "LBRACKET",
@@ -67,15 +66,9 @@ def t_ANY_STRING(t):
     return t
 
 
-def t_ANY_INTEGER(t):
-    r"\d+"
-    t.value = int(t.value)
-    return t
-
-
-def t_ANY_FLOAT(t):
-    r"\d+\.\d+"
-    t.value = float(t.value)
+def t_ANY_NUMBER(t):
+    r"\d+(?:[\.,]\d+)*"
+    t.value = int(t.value) if t.value.isdigit() else float(t.value)
     return t
 
 
