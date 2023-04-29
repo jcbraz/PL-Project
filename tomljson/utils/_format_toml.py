@@ -47,48 +47,6 @@ def handleTableArrayFormat(toml_str: str):
     for i in range(len(lines)):
         match = re.search(search_pattern, lines[i])
         if match:
-            lines[i] = lines[i].replace("[", ".[", 1)
+            lines[i] = lines[i].replace("[", ".[")
 
     return "\n".join(lines)
-
-
-input_toml = """
-title = "TOML Example"
-
-[database.phi]
-enable = false
-ports = "undefined"
-
-[owner.dizes]
-name = "Dizes"
-dob = 1990-05-27T07:32:00-08:00
-
-[owner]
-name = "Tom Preston-Werner"
-dob = 1979-05-27T07:32:00-08:00
-
-[servers.dizes]
-ip = "321123"
-role = "data"
-
-[database]
-enabled = true
-ports = [ 8000, 8001, 8002 ]
-data = [ ["delta", "phi"], [3.14] ]
-temp_targets = { cpu = 79.5, case = 72.0 }
-
-[servers]
-[servers.alpha]
-ip = "10.0.0.1"
-role = "frontend"
-
-[servers.beta]
-ip = "10.0.0.2"
-role = "backend"
-
-[bananas]
-number = 1
-species = "tropical"
-"""
-
-print(handleTableArrayFormat(input_toml))

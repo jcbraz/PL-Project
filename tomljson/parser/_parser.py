@@ -74,9 +74,10 @@ def p_assignment(p):
 
 
 def p_array(p):
-    """array : DOT LBRACKET values RBRACKET
-    | LBRACKET RBRACKET"""
-    if len(p) == 2:
+    """array : DOT LBRACKET array RBRACKET
+    | DOT LBRACKET values RBRACKET
+    | DOT LBRACKET RBRACKET"""
+    if len(p) == 4:
         p[0] = []
     else:
         p[0] = p[3]
@@ -122,5 +123,5 @@ for i in range(1, len(handledPath)):
 
 data = handleTableArrayFormat(readFile(filepath))
 
-result = parser.parse(data)
+result = parser.parse(data, debug=True)
 print(parser.parse(data))
