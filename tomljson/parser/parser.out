@@ -1,0 +1,805 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    COMMENT
+    EQUAL
+    NEWLINE
+    SPACE
+
+Grammar
+
+Rule 0     S' -> document
+Rule 1     document -> toml
+Rule 2     document -> toml document
+Rule 3     toml -> content
+Rule 4     toml -> array
+Rule 5     toml -> table
+Rule 6     toml -> inline_table
+Rule 7     toml -> array_tables
+Rule 8     array_tables -> ARRAY_TABLES_HEADER content
+Rule 9     array_tables -> ARRAY_TABLES_HEADER array_tables
+Rule 10    child -> CHILD_HEADER content
+Rule 11    inline_table -> LCURLY inline_contents RCURLY
+Rule 12    inline_table -> LCURLY RCURLY
+Rule 13    table -> TABLE_HEADER content
+Rule 14    table -> TABLE_HEADER child
+Rule 15    table -> table child
+Rule 16    inline_contents -> inline_contents COMMA content
+Rule 17    inline_contents -> content
+Rule 18    content -> assignment
+Rule 19    content -> content assignment
+Rule 20    assignment -> VARIABLE value
+Rule 21    assignment -> VARIABLE array
+Rule 22    assignment -> VARIABLE inline_table
+Rule 23    array -> DOT LBRACKET array RBRACKET
+Rule 24    array -> DOT LBRACKET values RBRACKET
+Rule 25    array -> DOT LBRACKET RBRACKET
+Rule 26    values -> value COMMA values
+Rule 27    values -> value
+Rule 28    value -> STRING
+Rule 29    value -> NUMBER
+Rule 30    value -> BOOLEAN
+Rule 31    value -> DATE
+
+Terminals, with rules where they appear
+
+ARRAY_TABLES_HEADER  : 8 9
+BOOLEAN              : 30
+CHILD_HEADER         : 10
+COMMA                : 16 26
+COMMENT              : 
+DATE                 : 31
+DOT                  : 23 24 25
+EQUAL                : 
+LBRACKET             : 23 24 25
+LCURLY               : 11 12
+NEWLINE              : 
+NUMBER               : 29
+RBRACKET             : 23 24 25
+RCURLY               : 11 12
+SPACE                : 
+STRING               : 28
+TABLE_HEADER         : 13 14
+VARIABLE             : 20 21 22
+error                : 
+
+Nonterminals, with rules where they appear
+
+array                : 4 21 23
+array_tables         : 7 9
+assignment           : 18 19
+child                : 14 15
+content              : 3 8 10 13 16 17 19
+document             : 2 0
+inline_contents      : 11 16
+inline_table         : 6 22
+table                : 5 15
+toml                 : 1 2
+value                : 20 26 27
+values               : 24 26
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . document
+    (1) document -> . toml
+    (2) document -> . toml document
+    (3) toml -> . content
+    (4) toml -> . array
+    (5) toml -> . table
+    (6) toml -> . inline_table
+    (7) toml -> . array_tables
+    (18) content -> . assignment
+    (19) content -> . content assignment
+    (23) array -> . DOT LBRACKET array RBRACKET
+    (24) array -> . DOT LBRACKET values RBRACKET
+    (25) array -> . DOT LBRACKET RBRACKET
+    (13) table -> . TABLE_HEADER content
+    (14) table -> . TABLE_HEADER child
+    (15) table -> . table child
+    (11) inline_table -> . LCURLY inline_contents RCURLY
+    (12) inline_table -> . LCURLY RCURLY
+    (8) array_tables -> . ARRAY_TABLES_HEADER content
+    (9) array_tables -> . ARRAY_TABLES_HEADER array_tables
+    (20) assignment -> . VARIABLE value
+    (21) assignment -> . VARIABLE array
+    (22) assignment -> . VARIABLE inline_table
+
+    DOT             shift and go to state 9
+    TABLE_HEADER    shift and go to state 10
+    LCURLY          shift and go to state 11
+    ARRAY_TABLES_HEADER shift and go to state 12
+    VARIABLE        shift and go to state 13
+
+    document                       shift and go to state 1
+    toml                           shift and go to state 2
+    content                        shift and go to state 3
+    array                          shift and go to state 4
+    table                          shift and go to state 5
+    inline_table                   shift and go to state 6
+    array_tables                   shift and go to state 7
+    assignment                     shift and go to state 8
+
+state 1
+
+    (0) S' -> document .
+
+
+
+state 2
+
+    (1) document -> toml .
+    (2) document -> toml . document
+    (1) document -> . toml
+    (2) document -> . toml document
+    (3) toml -> . content
+    (4) toml -> . array
+    (5) toml -> . table
+    (6) toml -> . inline_table
+    (7) toml -> . array_tables
+    (18) content -> . assignment
+    (19) content -> . content assignment
+    (23) array -> . DOT LBRACKET array RBRACKET
+    (24) array -> . DOT LBRACKET values RBRACKET
+    (25) array -> . DOT LBRACKET RBRACKET
+    (13) table -> . TABLE_HEADER content
+    (14) table -> . TABLE_HEADER child
+    (15) table -> . table child
+    (11) inline_table -> . LCURLY inline_contents RCURLY
+    (12) inline_table -> . LCURLY RCURLY
+    (8) array_tables -> . ARRAY_TABLES_HEADER content
+    (9) array_tables -> . ARRAY_TABLES_HEADER array_tables
+    (20) assignment -> . VARIABLE value
+    (21) assignment -> . VARIABLE array
+    (22) assignment -> . VARIABLE inline_table
+
+    $end            reduce using rule 1 (document -> toml .)
+    DOT             shift and go to state 9
+    TABLE_HEADER    shift and go to state 10
+    LCURLY          shift and go to state 11
+    ARRAY_TABLES_HEADER shift and go to state 12
+    VARIABLE        shift and go to state 13
+
+    toml                           shift and go to state 2
+    document                       shift and go to state 14
+    content                        shift and go to state 3
+    array                          shift and go to state 4
+    table                          shift and go to state 5
+    inline_table                   shift and go to state 6
+    array_tables                   shift and go to state 7
+    assignment                     shift and go to state 8
+
+state 3
+
+    (3) toml -> content .
+    (19) content -> content . assignment
+    (20) assignment -> . VARIABLE value
+    (21) assignment -> . VARIABLE array
+    (22) assignment -> . VARIABLE inline_table
+
+  ! shift/reduce conflict for VARIABLE resolved as shift
+    DOT             reduce using rule 3 (toml -> content .)
+    TABLE_HEADER    reduce using rule 3 (toml -> content .)
+    LCURLY          reduce using rule 3 (toml -> content .)
+    ARRAY_TABLES_HEADER reduce using rule 3 (toml -> content .)
+    $end            reduce using rule 3 (toml -> content .)
+    VARIABLE        shift and go to state 13
+
+  ! VARIABLE        [ reduce using rule 3 (toml -> content .) ]
+
+    assignment                     shift and go to state 15
+
+state 4
+
+    (4) toml -> array .
+
+    DOT             reduce using rule 4 (toml -> array .)
+    TABLE_HEADER    reduce using rule 4 (toml -> array .)
+    LCURLY          reduce using rule 4 (toml -> array .)
+    ARRAY_TABLES_HEADER reduce using rule 4 (toml -> array .)
+    VARIABLE        reduce using rule 4 (toml -> array .)
+    $end            reduce using rule 4 (toml -> array .)
+
+
+state 5
+
+    (5) toml -> table .
+    (15) table -> table . child
+    (10) child -> . CHILD_HEADER content
+
+    DOT             reduce using rule 5 (toml -> table .)
+    TABLE_HEADER    reduce using rule 5 (toml -> table .)
+    LCURLY          reduce using rule 5 (toml -> table .)
+    ARRAY_TABLES_HEADER reduce using rule 5 (toml -> table .)
+    VARIABLE        reduce using rule 5 (toml -> table .)
+    $end            reduce using rule 5 (toml -> table .)
+    CHILD_HEADER    shift and go to state 17
+
+    child                          shift and go to state 16
+
+state 6
+
+    (6) toml -> inline_table .
+
+    DOT             reduce using rule 6 (toml -> inline_table .)
+    TABLE_HEADER    reduce using rule 6 (toml -> inline_table .)
+    LCURLY          reduce using rule 6 (toml -> inline_table .)
+    ARRAY_TABLES_HEADER reduce using rule 6 (toml -> inline_table .)
+    VARIABLE        reduce using rule 6 (toml -> inline_table .)
+    $end            reduce using rule 6 (toml -> inline_table .)
+
+
+state 7
+
+    (7) toml -> array_tables .
+
+    DOT             reduce using rule 7 (toml -> array_tables .)
+    TABLE_HEADER    reduce using rule 7 (toml -> array_tables .)
+    LCURLY          reduce using rule 7 (toml -> array_tables .)
+    ARRAY_TABLES_HEADER reduce using rule 7 (toml -> array_tables .)
+    VARIABLE        reduce using rule 7 (toml -> array_tables .)
+    $end            reduce using rule 7 (toml -> array_tables .)
+
+
+state 8
+
+    (18) content -> assignment .
+
+    VARIABLE        reduce using rule 18 (content -> assignment .)
+    DOT             reduce using rule 18 (content -> assignment .)
+    TABLE_HEADER    reduce using rule 18 (content -> assignment .)
+    LCURLY          reduce using rule 18 (content -> assignment .)
+    ARRAY_TABLES_HEADER reduce using rule 18 (content -> assignment .)
+    $end            reduce using rule 18 (content -> assignment .)
+    CHILD_HEADER    reduce using rule 18 (content -> assignment .)
+    RCURLY          reduce using rule 18 (content -> assignment .)
+    COMMA           reduce using rule 18 (content -> assignment .)
+
+
+state 9
+
+    (23) array -> DOT . LBRACKET array RBRACKET
+    (24) array -> DOT . LBRACKET values RBRACKET
+    (25) array -> DOT . LBRACKET RBRACKET
+
+    LBRACKET        shift and go to state 18
+
+
+state 10
+
+    (13) table -> TABLE_HEADER . content
+    (14) table -> TABLE_HEADER . child
+    (18) content -> . assignment
+    (19) content -> . content assignment
+    (10) child -> . CHILD_HEADER content
+    (20) assignment -> . VARIABLE value
+    (21) assignment -> . VARIABLE array
+    (22) assignment -> . VARIABLE inline_table
+
+    CHILD_HEADER    shift and go to state 17
+    VARIABLE        shift and go to state 13
+
+    content                        shift and go to state 19
+    child                          shift and go to state 20
+    assignment                     shift and go to state 8
+
+state 11
+
+    (11) inline_table -> LCURLY . inline_contents RCURLY
+    (12) inline_table -> LCURLY . RCURLY
+    (16) inline_contents -> . inline_contents COMMA content
+    (17) inline_contents -> . content
+    (18) content -> . assignment
+    (19) content -> . content assignment
+    (20) assignment -> . VARIABLE value
+    (21) assignment -> . VARIABLE array
+    (22) assignment -> . VARIABLE inline_table
+
+    RCURLY          shift and go to state 22
+    VARIABLE        shift and go to state 13
+
+    inline_contents                shift and go to state 21
+    content                        shift and go to state 23
+    assignment                     shift and go to state 8
+
+state 12
+
+    (8) array_tables -> ARRAY_TABLES_HEADER . content
+    (9) array_tables -> ARRAY_TABLES_HEADER . array_tables
+    (18) content -> . assignment
+    (19) content -> . content assignment
+    (8) array_tables -> . ARRAY_TABLES_HEADER content
+    (9) array_tables -> . ARRAY_TABLES_HEADER array_tables
+    (20) assignment -> . VARIABLE value
+    (21) assignment -> . VARIABLE array
+    (22) assignment -> . VARIABLE inline_table
+
+    ARRAY_TABLES_HEADER shift and go to state 12
+    VARIABLE        shift and go to state 13
+
+    content                        shift and go to state 24
+    array_tables                   shift and go to state 25
+    assignment                     shift and go to state 8
+
+state 13
+
+    (20) assignment -> VARIABLE . value
+    (21) assignment -> VARIABLE . array
+    (22) assignment -> VARIABLE . inline_table
+    (28) value -> . STRING
+    (29) value -> . NUMBER
+    (30) value -> . BOOLEAN
+    (31) value -> . DATE
+    (23) array -> . DOT LBRACKET array RBRACKET
+    (24) array -> . DOT LBRACKET values RBRACKET
+    (25) array -> . DOT LBRACKET RBRACKET
+    (11) inline_table -> . LCURLY inline_contents RCURLY
+    (12) inline_table -> . LCURLY RCURLY
+
+    STRING          shift and go to state 29
+    NUMBER          shift and go to state 30
+    BOOLEAN         shift and go to state 31
+    DATE            shift and go to state 32
+    DOT             shift and go to state 9
+    LCURLY          shift and go to state 11
+
+    value                          shift and go to state 26
+    array                          shift and go to state 27
+    inline_table                   shift and go to state 28
+
+state 14
+
+    (2) document -> toml document .
+
+    $end            reduce using rule 2 (document -> toml document .)
+
+
+state 15
+
+    (19) content -> content assignment .
+
+    VARIABLE        reduce using rule 19 (content -> content assignment .)
+    DOT             reduce using rule 19 (content -> content assignment .)
+    TABLE_HEADER    reduce using rule 19 (content -> content assignment .)
+    LCURLY          reduce using rule 19 (content -> content assignment .)
+    ARRAY_TABLES_HEADER reduce using rule 19 (content -> content assignment .)
+    $end            reduce using rule 19 (content -> content assignment .)
+    CHILD_HEADER    reduce using rule 19 (content -> content assignment .)
+    RCURLY          reduce using rule 19 (content -> content assignment .)
+    COMMA           reduce using rule 19 (content -> content assignment .)
+
+
+state 16
+
+    (15) table -> table child .
+
+    CHILD_HEADER    reduce using rule 15 (table -> table child .)
+    DOT             reduce using rule 15 (table -> table child .)
+    TABLE_HEADER    reduce using rule 15 (table -> table child .)
+    LCURLY          reduce using rule 15 (table -> table child .)
+    ARRAY_TABLES_HEADER reduce using rule 15 (table -> table child .)
+    VARIABLE        reduce using rule 15 (table -> table child .)
+    $end            reduce using rule 15 (table -> table child .)
+
+
+state 17
+
+    (10) child -> CHILD_HEADER . content
+    (18) content -> . assignment
+    (19) content -> . content assignment
+    (20) assignment -> . VARIABLE value
+    (21) assignment -> . VARIABLE array
+    (22) assignment -> . VARIABLE inline_table
+
+    VARIABLE        shift and go to state 13
+
+    content                        shift and go to state 33
+    assignment                     shift and go to state 8
+
+state 18
+
+    (23) array -> DOT LBRACKET . array RBRACKET
+    (24) array -> DOT LBRACKET . values RBRACKET
+    (25) array -> DOT LBRACKET . RBRACKET
+    (23) array -> . DOT LBRACKET array RBRACKET
+    (24) array -> . DOT LBRACKET values RBRACKET
+    (25) array -> . DOT LBRACKET RBRACKET
+    (26) values -> . value COMMA values
+    (27) values -> . value
+    (28) value -> . STRING
+    (29) value -> . NUMBER
+    (30) value -> . BOOLEAN
+    (31) value -> . DATE
+
+    RBRACKET        shift and go to state 35
+    DOT             shift and go to state 9
+    STRING          shift and go to state 29
+    NUMBER          shift and go to state 30
+    BOOLEAN         shift and go to state 31
+    DATE            shift and go to state 32
+
+    array                          shift and go to state 34
+    values                         shift and go to state 36
+    value                          shift and go to state 37
+
+state 19
+
+    (13) table -> TABLE_HEADER content .
+    (19) content -> content . assignment
+    (20) assignment -> . VARIABLE value
+    (21) assignment -> . VARIABLE array
+    (22) assignment -> . VARIABLE inline_table
+
+  ! shift/reduce conflict for VARIABLE resolved as shift
+    CHILD_HEADER    reduce using rule 13 (table -> TABLE_HEADER content .)
+    DOT             reduce using rule 13 (table -> TABLE_HEADER content .)
+    TABLE_HEADER    reduce using rule 13 (table -> TABLE_HEADER content .)
+    LCURLY          reduce using rule 13 (table -> TABLE_HEADER content .)
+    ARRAY_TABLES_HEADER reduce using rule 13 (table -> TABLE_HEADER content .)
+    $end            reduce using rule 13 (table -> TABLE_HEADER content .)
+    VARIABLE        shift and go to state 13
+
+  ! VARIABLE        [ reduce using rule 13 (table -> TABLE_HEADER content .) ]
+
+    assignment                     shift and go to state 15
+
+state 20
+
+    (14) table -> TABLE_HEADER child .
+
+    CHILD_HEADER    reduce using rule 14 (table -> TABLE_HEADER child .)
+    DOT             reduce using rule 14 (table -> TABLE_HEADER child .)
+    TABLE_HEADER    reduce using rule 14 (table -> TABLE_HEADER child .)
+    LCURLY          reduce using rule 14 (table -> TABLE_HEADER child .)
+    ARRAY_TABLES_HEADER reduce using rule 14 (table -> TABLE_HEADER child .)
+    VARIABLE        reduce using rule 14 (table -> TABLE_HEADER child .)
+    $end            reduce using rule 14 (table -> TABLE_HEADER child .)
+
+
+state 21
+
+    (11) inline_table -> LCURLY inline_contents . RCURLY
+    (16) inline_contents -> inline_contents . COMMA content
+
+    RCURLY          shift and go to state 38
+    COMMA           shift and go to state 39
+
+
+state 22
+
+    (12) inline_table -> LCURLY RCURLY .
+
+    DOT             reduce using rule 12 (inline_table -> LCURLY RCURLY .)
+    TABLE_HEADER    reduce using rule 12 (inline_table -> LCURLY RCURLY .)
+    LCURLY          reduce using rule 12 (inline_table -> LCURLY RCURLY .)
+    ARRAY_TABLES_HEADER reduce using rule 12 (inline_table -> LCURLY RCURLY .)
+    VARIABLE        reduce using rule 12 (inline_table -> LCURLY RCURLY .)
+    $end            reduce using rule 12 (inline_table -> LCURLY RCURLY .)
+    CHILD_HEADER    reduce using rule 12 (inline_table -> LCURLY RCURLY .)
+    RCURLY          reduce using rule 12 (inline_table -> LCURLY RCURLY .)
+    COMMA           reduce using rule 12 (inline_table -> LCURLY RCURLY .)
+
+
+state 23
+
+    (17) inline_contents -> content .
+    (19) content -> content . assignment
+    (20) assignment -> . VARIABLE value
+    (21) assignment -> . VARIABLE array
+    (22) assignment -> . VARIABLE inline_table
+
+    RCURLY          reduce using rule 17 (inline_contents -> content .)
+    COMMA           reduce using rule 17 (inline_contents -> content .)
+    VARIABLE        shift and go to state 13
+
+    assignment                     shift and go to state 15
+
+state 24
+
+    (8) array_tables -> ARRAY_TABLES_HEADER content .
+    (19) content -> content . assignment
+    (20) assignment -> . VARIABLE value
+    (21) assignment -> . VARIABLE array
+    (22) assignment -> . VARIABLE inline_table
+
+  ! shift/reduce conflict for VARIABLE resolved as shift
+    DOT             reduce using rule 8 (array_tables -> ARRAY_TABLES_HEADER content .)
+    TABLE_HEADER    reduce using rule 8 (array_tables -> ARRAY_TABLES_HEADER content .)
+    LCURLY          reduce using rule 8 (array_tables -> ARRAY_TABLES_HEADER content .)
+    ARRAY_TABLES_HEADER reduce using rule 8 (array_tables -> ARRAY_TABLES_HEADER content .)
+    $end            reduce using rule 8 (array_tables -> ARRAY_TABLES_HEADER content .)
+    VARIABLE        shift and go to state 13
+
+  ! VARIABLE        [ reduce using rule 8 (array_tables -> ARRAY_TABLES_HEADER content .) ]
+
+    assignment                     shift and go to state 15
+
+state 25
+
+    (9) array_tables -> ARRAY_TABLES_HEADER array_tables .
+
+    DOT             reduce using rule 9 (array_tables -> ARRAY_TABLES_HEADER array_tables .)
+    TABLE_HEADER    reduce using rule 9 (array_tables -> ARRAY_TABLES_HEADER array_tables .)
+    LCURLY          reduce using rule 9 (array_tables -> ARRAY_TABLES_HEADER array_tables .)
+    ARRAY_TABLES_HEADER reduce using rule 9 (array_tables -> ARRAY_TABLES_HEADER array_tables .)
+    VARIABLE        reduce using rule 9 (array_tables -> ARRAY_TABLES_HEADER array_tables .)
+    $end            reduce using rule 9 (array_tables -> ARRAY_TABLES_HEADER array_tables .)
+
+
+state 26
+
+    (20) assignment -> VARIABLE value .
+
+    VARIABLE        reduce using rule 20 (assignment -> VARIABLE value .)
+    DOT             reduce using rule 20 (assignment -> VARIABLE value .)
+    TABLE_HEADER    reduce using rule 20 (assignment -> VARIABLE value .)
+    LCURLY          reduce using rule 20 (assignment -> VARIABLE value .)
+    ARRAY_TABLES_HEADER reduce using rule 20 (assignment -> VARIABLE value .)
+    $end            reduce using rule 20 (assignment -> VARIABLE value .)
+    CHILD_HEADER    reduce using rule 20 (assignment -> VARIABLE value .)
+    RCURLY          reduce using rule 20 (assignment -> VARIABLE value .)
+    COMMA           reduce using rule 20 (assignment -> VARIABLE value .)
+
+
+state 27
+
+    (21) assignment -> VARIABLE array .
+
+    VARIABLE        reduce using rule 21 (assignment -> VARIABLE array .)
+    DOT             reduce using rule 21 (assignment -> VARIABLE array .)
+    TABLE_HEADER    reduce using rule 21 (assignment -> VARIABLE array .)
+    LCURLY          reduce using rule 21 (assignment -> VARIABLE array .)
+    ARRAY_TABLES_HEADER reduce using rule 21 (assignment -> VARIABLE array .)
+    $end            reduce using rule 21 (assignment -> VARIABLE array .)
+    CHILD_HEADER    reduce using rule 21 (assignment -> VARIABLE array .)
+    RCURLY          reduce using rule 21 (assignment -> VARIABLE array .)
+    COMMA           reduce using rule 21 (assignment -> VARIABLE array .)
+
+
+state 28
+
+    (22) assignment -> VARIABLE inline_table .
+
+    VARIABLE        reduce using rule 22 (assignment -> VARIABLE inline_table .)
+    DOT             reduce using rule 22 (assignment -> VARIABLE inline_table .)
+    TABLE_HEADER    reduce using rule 22 (assignment -> VARIABLE inline_table .)
+    LCURLY          reduce using rule 22 (assignment -> VARIABLE inline_table .)
+    ARRAY_TABLES_HEADER reduce using rule 22 (assignment -> VARIABLE inline_table .)
+    $end            reduce using rule 22 (assignment -> VARIABLE inline_table .)
+    CHILD_HEADER    reduce using rule 22 (assignment -> VARIABLE inline_table .)
+    RCURLY          reduce using rule 22 (assignment -> VARIABLE inline_table .)
+    COMMA           reduce using rule 22 (assignment -> VARIABLE inline_table .)
+
+
+state 29
+
+    (28) value -> STRING .
+
+    VARIABLE        reduce using rule 28 (value -> STRING .)
+    DOT             reduce using rule 28 (value -> STRING .)
+    TABLE_HEADER    reduce using rule 28 (value -> STRING .)
+    LCURLY          reduce using rule 28 (value -> STRING .)
+    ARRAY_TABLES_HEADER reduce using rule 28 (value -> STRING .)
+    $end            reduce using rule 28 (value -> STRING .)
+    CHILD_HEADER    reduce using rule 28 (value -> STRING .)
+    RCURLY          reduce using rule 28 (value -> STRING .)
+    COMMA           reduce using rule 28 (value -> STRING .)
+    RBRACKET        reduce using rule 28 (value -> STRING .)
+
+
+state 30
+
+    (29) value -> NUMBER .
+
+    VARIABLE        reduce using rule 29 (value -> NUMBER .)
+    DOT             reduce using rule 29 (value -> NUMBER .)
+    TABLE_HEADER    reduce using rule 29 (value -> NUMBER .)
+    LCURLY          reduce using rule 29 (value -> NUMBER .)
+    ARRAY_TABLES_HEADER reduce using rule 29 (value -> NUMBER .)
+    $end            reduce using rule 29 (value -> NUMBER .)
+    CHILD_HEADER    reduce using rule 29 (value -> NUMBER .)
+    RCURLY          reduce using rule 29 (value -> NUMBER .)
+    COMMA           reduce using rule 29 (value -> NUMBER .)
+    RBRACKET        reduce using rule 29 (value -> NUMBER .)
+
+
+state 31
+
+    (30) value -> BOOLEAN .
+
+    VARIABLE        reduce using rule 30 (value -> BOOLEAN .)
+    DOT             reduce using rule 30 (value -> BOOLEAN .)
+    TABLE_HEADER    reduce using rule 30 (value -> BOOLEAN .)
+    LCURLY          reduce using rule 30 (value -> BOOLEAN .)
+    ARRAY_TABLES_HEADER reduce using rule 30 (value -> BOOLEAN .)
+    $end            reduce using rule 30 (value -> BOOLEAN .)
+    CHILD_HEADER    reduce using rule 30 (value -> BOOLEAN .)
+    RCURLY          reduce using rule 30 (value -> BOOLEAN .)
+    COMMA           reduce using rule 30 (value -> BOOLEAN .)
+    RBRACKET        reduce using rule 30 (value -> BOOLEAN .)
+
+
+state 32
+
+    (31) value -> DATE .
+
+    VARIABLE        reduce using rule 31 (value -> DATE .)
+    DOT             reduce using rule 31 (value -> DATE .)
+    TABLE_HEADER    reduce using rule 31 (value -> DATE .)
+    LCURLY          reduce using rule 31 (value -> DATE .)
+    ARRAY_TABLES_HEADER reduce using rule 31 (value -> DATE .)
+    $end            reduce using rule 31 (value -> DATE .)
+    CHILD_HEADER    reduce using rule 31 (value -> DATE .)
+    RCURLY          reduce using rule 31 (value -> DATE .)
+    COMMA           reduce using rule 31 (value -> DATE .)
+    RBRACKET        reduce using rule 31 (value -> DATE .)
+
+
+state 33
+
+    (10) child -> CHILD_HEADER content .
+    (19) content -> content . assignment
+    (20) assignment -> . VARIABLE value
+    (21) assignment -> . VARIABLE array
+    (22) assignment -> . VARIABLE inline_table
+
+  ! shift/reduce conflict for VARIABLE resolved as shift
+    CHILD_HEADER    reduce using rule 10 (child -> CHILD_HEADER content .)
+    DOT             reduce using rule 10 (child -> CHILD_HEADER content .)
+    TABLE_HEADER    reduce using rule 10 (child -> CHILD_HEADER content .)
+    LCURLY          reduce using rule 10 (child -> CHILD_HEADER content .)
+    ARRAY_TABLES_HEADER reduce using rule 10 (child -> CHILD_HEADER content .)
+    $end            reduce using rule 10 (child -> CHILD_HEADER content .)
+    VARIABLE        shift and go to state 13
+
+  ! VARIABLE        [ reduce using rule 10 (child -> CHILD_HEADER content .) ]
+
+    assignment                     shift and go to state 15
+
+state 34
+
+    (23) array -> DOT LBRACKET array . RBRACKET
+
+    RBRACKET        shift and go to state 40
+
+
+state 35
+
+    (25) array -> DOT LBRACKET RBRACKET .
+
+    DOT             reduce using rule 25 (array -> DOT LBRACKET RBRACKET .)
+    TABLE_HEADER    reduce using rule 25 (array -> DOT LBRACKET RBRACKET .)
+    LCURLY          reduce using rule 25 (array -> DOT LBRACKET RBRACKET .)
+    ARRAY_TABLES_HEADER reduce using rule 25 (array -> DOT LBRACKET RBRACKET .)
+    VARIABLE        reduce using rule 25 (array -> DOT LBRACKET RBRACKET .)
+    $end            reduce using rule 25 (array -> DOT LBRACKET RBRACKET .)
+    CHILD_HEADER    reduce using rule 25 (array -> DOT LBRACKET RBRACKET .)
+    RCURLY          reduce using rule 25 (array -> DOT LBRACKET RBRACKET .)
+    COMMA           reduce using rule 25 (array -> DOT LBRACKET RBRACKET .)
+    RBRACKET        reduce using rule 25 (array -> DOT LBRACKET RBRACKET .)
+
+
+state 36
+
+    (24) array -> DOT LBRACKET values . RBRACKET
+
+    RBRACKET        shift and go to state 41
+
+
+state 37
+
+    (26) values -> value . COMMA values
+    (27) values -> value .
+
+    COMMA           shift and go to state 42
+    RBRACKET        reduce using rule 27 (values -> value .)
+
+
+state 38
+
+    (11) inline_table -> LCURLY inline_contents RCURLY .
+
+    DOT             reduce using rule 11 (inline_table -> LCURLY inline_contents RCURLY .)
+    TABLE_HEADER    reduce using rule 11 (inline_table -> LCURLY inline_contents RCURLY .)
+    LCURLY          reduce using rule 11 (inline_table -> LCURLY inline_contents RCURLY .)
+    ARRAY_TABLES_HEADER reduce using rule 11 (inline_table -> LCURLY inline_contents RCURLY .)
+    VARIABLE        reduce using rule 11 (inline_table -> LCURLY inline_contents RCURLY .)
+    $end            reduce using rule 11 (inline_table -> LCURLY inline_contents RCURLY .)
+    CHILD_HEADER    reduce using rule 11 (inline_table -> LCURLY inline_contents RCURLY .)
+    RCURLY          reduce using rule 11 (inline_table -> LCURLY inline_contents RCURLY .)
+    COMMA           reduce using rule 11 (inline_table -> LCURLY inline_contents RCURLY .)
+
+
+state 39
+
+    (16) inline_contents -> inline_contents COMMA . content
+    (18) content -> . assignment
+    (19) content -> . content assignment
+    (20) assignment -> . VARIABLE value
+    (21) assignment -> . VARIABLE array
+    (22) assignment -> . VARIABLE inline_table
+
+    VARIABLE        shift and go to state 13
+
+    content                        shift and go to state 43
+    assignment                     shift and go to state 8
+
+state 40
+
+    (23) array -> DOT LBRACKET array RBRACKET .
+
+    DOT             reduce using rule 23 (array -> DOT LBRACKET array RBRACKET .)
+    TABLE_HEADER    reduce using rule 23 (array -> DOT LBRACKET array RBRACKET .)
+    LCURLY          reduce using rule 23 (array -> DOT LBRACKET array RBRACKET .)
+    ARRAY_TABLES_HEADER reduce using rule 23 (array -> DOT LBRACKET array RBRACKET .)
+    VARIABLE        reduce using rule 23 (array -> DOT LBRACKET array RBRACKET .)
+    $end            reduce using rule 23 (array -> DOT LBRACKET array RBRACKET .)
+    CHILD_HEADER    reduce using rule 23 (array -> DOT LBRACKET array RBRACKET .)
+    RCURLY          reduce using rule 23 (array -> DOT LBRACKET array RBRACKET .)
+    COMMA           reduce using rule 23 (array -> DOT LBRACKET array RBRACKET .)
+    RBRACKET        reduce using rule 23 (array -> DOT LBRACKET array RBRACKET .)
+
+
+state 41
+
+    (24) array -> DOT LBRACKET values RBRACKET .
+
+    DOT             reduce using rule 24 (array -> DOT LBRACKET values RBRACKET .)
+    TABLE_HEADER    reduce using rule 24 (array -> DOT LBRACKET values RBRACKET .)
+    LCURLY          reduce using rule 24 (array -> DOT LBRACKET values RBRACKET .)
+    ARRAY_TABLES_HEADER reduce using rule 24 (array -> DOT LBRACKET values RBRACKET .)
+    VARIABLE        reduce using rule 24 (array -> DOT LBRACKET values RBRACKET .)
+    $end            reduce using rule 24 (array -> DOT LBRACKET values RBRACKET .)
+    CHILD_HEADER    reduce using rule 24 (array -> DOT LBRACKET values RBRACKET .)
+    RCURLY          reduce using rule 24 (array -> DOT LBRACKET values RBRACKET .)
+    COMMA           reduce using rule 24 (array -> DOT LBRACKET values RBRACKET .)
+    RBRACKET        reduce using rule 24 (array -> DOT LBRACKET values RBRACKET .)
+
+
+state 42
+
+    (26) values -> value COMMA . values
+    (26) values -> . value COMMA values
+    (27) values -> . value
+    (28) value -> . STRING
+    (29) value -> . NUMBER
+    (30) value -> . BOOLEAN
+    (31) value -> . DATE
+
+    STRING          shift and go to state 29
+    NUMBER          shift and go to state 30
+    BOOLEAN         shift and go to state 31
+    DATE            shift and go to state 32
+
+    value                          shift and go to state 37
+    values                         shift and go to state 44
+
+state 43
+
+    (16) inline_contents -> inline_contents COMMA content .
+    (19) content -> content . assignment
+    (20) assignment -> . VARIABLE value
+    (21) assignment -> . VARIABLE array
+    (22) assignment -> . VARIABLE inline_table
+
+    RCURLY          reduce using rule 16 (inline_contents -> inline_contents COMMA content .)
+    COMMA           reduce using rule 16 (inline_contents -> inline_contents COMMA content .)
+    VARIABLE        shift and go to state 13
+
+    assignment                     shift and go to state 15
+
+state 44
+
+    (26) values -> value COMMA values .
+
+    RBRACKET        reduce using rule 26 (values -> value COMMA values .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for VARIABLE in state 3 resolved as shift
+WARNING: shift/reduce conflict for VARIABLE in state 19 resolved as shift
+WARNING: shift/reduce conflict for VARIABLE in state 24 resolved as shift
+WARNING: shift/reduce conflict for VARIABLE in state 33 resolved as shift
