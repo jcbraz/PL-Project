@@ -9,7 +9,7 @@ def p_document(p):
     """document : toml
     | toml document"""
     if len(p) == 3:
-        p[0] = p[1] + p[2]
+        p[0] = [p[1]].append(p[2])
     else:
         p[0] = p[1]
 
@@ -31,11 +31,14 @@ def p_array_tables(p):
 
 def p_child(p):
     """child : CHILD_HEADER content"""
-    p[0] = [p[1]].append(p[2])
+    if len(p) == 3:
+        p[0] = [p[1]].append(p[2])
+    else:
+        p[0] = p[1]
 
 
 def p_inline_table(p):
-    """inline_table : LCURLY contents RCURLY
+    """inline_table : LCURLY inline_contents RCURLY
     | LCURLY RCURLY"""
     if len(p) == 4:
         p[0] = p[2]
@@ -45,12 +48,13 @@ def p_inline_table(p):
 
 def p_table(p):
     """table : TABLE_HEADER content
-    | TABLE_HEADER child"""
+    | TABLE_HEADER child
+    | table child"""
     p[0] = [p[1]].append(p[2])
 
 
-def p_contents(p):
-    """contents : contents COMMA content
+def p_inline_content(p):
+    """inline_contents : inline_contents COMMA content
     | content"""
     if len(p) == 2:
         p[0] = [p[1]]
@@ -122,5 +126,5 @@ for i in range(1, len(handledPath)):
 
 data = handleTableArrayFormat(readFile(filepath))
 
-result = parser.parse(data)
+result = parser.parse(data, debug=True)
 print(parser.parse(data))

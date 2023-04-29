@@ -20,6 +20,12 @@ role = "frontend"
 ip = "10.0.0.2"
 role = "backend"
 
+[bananas]
+name = "Chiquita"
+price = 1.99
+quantity = 10
+
+
 # Line breaks are OK when inside arrays
 hosts = [
   "alpha",
