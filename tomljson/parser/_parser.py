@@ -9,7 +9,8 @@ def p_document(p):
     """document : toml
     | toml document"""
     if len(p) == 3:
-        p[0] = [p[1]].append(p[2])
+        # p[0] = [p[1]].append(p[2])
+        p[0] = p[1] + p[2]
     else:
         p[0] = p[1]
 
@@ -26,15 +27,12 @@ def p_toml(p):
 def p_array_tables(p):
     """array_tables : ARRAY_TABLES_HEADER content
     | ARRAY_TABLES_HEADER array_tables"""
-    p[0] = p[1] + p[2]
+    p[0] = [p[1]] + p[2]
 
 
 def p_child(p):
     """child : CHILD_HEADER content"""
-    if len(p) == 3:
-        p[0] = [p[1]].append(p[2])
-    else:
-        p[0] = p[1]
+    p[0] = [p[1]] + p[2] 
 
 
 def p_inline_table(p):
@@ -50,7 +48,7 @@ def p_table(p):
     """table : TABLE_HEADER content
     | TABLE_HEADER child
     | table child"""
-    p[0] = [p[1]].append(p[2])
+    p[0] = [p[1]] + p[2]
 
 
 def p_inline_content(p):
@@ -59,22 +57,23 @@ def p_inline_content(p):
     if len(p) == 2:
         p[0] = [p[1]]
     else:
-        p[0] = [p[1]].append(p[3])
+        p[0] = p[1] + [ p[3] ]
+
 
 def p_content(p):
     """content : assignment
     | content assignment"""
     if len(p) == 3:
-        p[0] = [p[1]].append(p[2])
+        p[0] = p[1] + [ p[2] ]
     else:
-        p[0] = p[1]
+        p[0] = [p[1]]
 
 
 def p_assignment(p):
     """assignment : VARIABLE value
     | VARIABLE array
     | VARIABLE inline_table"""
-    p[0] = p[2]
+    p[0] = [p[1]] + [p[2]]
 
 
 def p_array(p):
@@ -93,7 +92,7 @@ def p_values(p):
     if len(p) == 1:
         p[0] = [p[1]]
     elif len(p) == 4:
-        p[0] = [p[3]].append(p[1])
+        p[0] = [p[1]] + [p[3]]
 
 
 def p_value(p):
@@ -126,5 +125,8 @@ for i in range(1, len(handledPath)):
 
 data = handleTableArrayFormat(readFile(filepath))
 
-result = parser.parse(data, debug=True)
-print(parser.parse(data))
+result = parser.parse(data)
+
+with open("result.json", "w") as file:
+    file.write(str(result))
+# print(parser.parse(data))

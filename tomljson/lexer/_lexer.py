@@ -92,7 +92,6 @@ def t_TABLE_HEADER(t):
 
 def t_ARRAY_TABLES_HEADER(t):
     r"\[\[[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]*)*\]\]"
-    t.lexer.begin("array")
     return t
 
 
