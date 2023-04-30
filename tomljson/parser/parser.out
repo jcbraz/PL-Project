@@ -35,7 +35,7 @@ Rule 22    assignment -> VARIABLE inline_table
 Rule 23    array -> DOT LBRACKET array RBRACKET
 Rule 24    array -> DOT LBRACKET values RBRACKET
 Rule 25    array -> DOT LBRACKET RBRACKET
-Rule 26    values -> value COMMA values
+Rule 26    values -> values COMMA value
 Rule 27    values -> value
 Rule 28    value -> STRING
 Rule 29    value -> NUMBER
@@ -406,7 +406,7 @@ state 18
     (23) array -> . DOT LBRACKET array RBRACKET
     (24) array -> . DOT LBRACKET values RBRACKET
     (25) array -> . DOT LBRACKET RBRACKET
-    (26) values -> . value COMMA values
+    (26) values -> . values COMMA value
     (27) values -> . value
     (28) value -> . STRING
     (29) value -> . NUMBER
@@ -684,17 +684,18 @@ state 35
 state 36
 
     (24) array -> DOT LBRACKET values . RBRACKET
+    (26) values -> values . COMMA value
 
     RBRACKET        shift and go to state 41
+    COMMA           shift and go to state 42
 
 
 state 37
 
-    (26) values -> value . COMMA values
     (27) values -> value .
 
-    COMMA           shift and go to state 42
     RBRACKET        reduce using rule 27 (values -> value .)
+    COMMA           reduce using rule 27 (values -> value .)
 
 
 state 38
@@ -760,9 +761,7 @@ state 41
 
 state 42
 
-    (26) values -> value COMMA . values
-    (26) values -> . value COMMA values
-    (27) values -> . value
+    (26) values -> values COMMA . value
     (28) value -> . STRING
     (29) value -> . NUMBER
     (30) value -> . BOOLEAN
@@ -773,8 +772,7 @@ state 42
     BOOLEAN         shift and go to state 31
     DATE            shift and go to state 32
 
-    value                          shift and go to state 37
-    values                         shift and go to state 44
+    value                          shift and go to state 44
 
 state 43
 
@@ -792,9 +790,10 @@ state 43
 
 state 44
 
-    (26) values -> value COMMA values .
+    (26) values -> values COMMA value .
 
-    RBRACKET        reduce using rule 26 (values -> value COMMA values .)
+    RBRACKET        reduce using rule 26 (values -> values COMMA value .)
+    COMMA           reduce using rule 26 (values -> values COMMA value .)
 
 WARNING: 
 WARNING: Conflicts:

@@ -38,7 +38,7 @@ def p_inline_table(p):
     """inline_table : LCURLY inline_contents RCURLY
     | LCURLY RCURLY"""
     if len(p) == 4:
-        p[0] = p[2]
+        p[0] = [p[1]] + p[2] + [p[3]]
     else:
         p[0] = []
 
@@ -53,10 +53,11 @@ def p_table(p):
 def p_inline_content(p):
     """inline_contents : inline_contents COMMA content
     | content"""
-    if len(p) == 2:
-        p[0] = p[1]
+    if len(p) == 4:
+        p[0] = p[1] + p[3]
     else:
-        p[0] = p[1] + [p[3]]
+        p[0] = p[1]
+
 
 
 def p_content(p):
@@ -86,12 +87,12 @@ def p_array(p):
 
 
 def p_values(p):
-    """values : value COMMA values
+    """values : values COMMA value
     | value"""
-    if len(p) == 1:
-        p[0] = p[1]
-    elif len(p) == 4:
-        p[0] = [p[1]] + [p[3]]
+    if len(p) == 4:
+        p[0] = p[1] + [p[3]]
+    else:
+        p[0] = [p[1]]
 
 
 def p_value(p):
@@ -124,7 +125,7 @@ for i in range(1, len(handledPath)):
 
 data = handleTableArrayFormat(readFile(filepath))
 
-result = parser.parse(data, debug=True)
+result = parser.parse(data)
 
-# with open("result.json", "w") as file:
-#     file.write(str(result))
+with open("result.json", "w") as file:
+    file.write(str(result))
