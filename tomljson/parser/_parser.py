@@ -9,7 +9,6 @@ def p_document(p):
     """document : toml
     | toml document"""
     if len(p) == 3:
-        # p[0] = [p[1]].append(p[2])
         p[0] = p[1] + p[2]
     else:
         p[0] = p[1]
@@ -32,7 +31,7 @@ def p_array_tables(p):
 
 def p_child(p):
     """child : CHILD_HEADER content"""
-    p[0] = [p[1]] + p[2] 
+    p[0] = [p[1]] + p[2]
 
 
 def p_inline_table(p):
@@ -55,18 +54,18 @@ def p_inline_content(p):
     """inline_contents : inline_contents COMMA content
     | content"""
     if len(p) == 2:
-        p[0] = [p[1]]
+        p[0] = p[1]
     else:
-        p[0] = p[1] + [ p[3] ]
+        p[0] = p[1] + [p[3]]
 
 
 def p_content(p):
     """content : assignment
     | content assignment"""
     if len(p) == 3:
-        p[0] = p[1] + [ p[2] ]
+        p[0] = p[1] + p[2]
     else:
-        p[0] = [p[1]]
+        p[0] = p[1]
 
 
 def p_assignment(p):
@@ -90,7 +89,7 @@ def p_values(p):
     """values : value COMMA values
     | value"""
     if len(p) == 1:
-        p[0] = [p[1]]
+        p[0] = p[1]
     elif len(p) == 4:
         p[0] = [p[1]] + [p[3]]
 
@@ -125,8 +124,7 @@ for i in range(1, len(handledPath)):
 
 data = handleTableArrayFormat(readFile(filepath))
 
-result = parser.parse(data)
+result = parser.parse(data, debug=True)
 
-with open("result.json", "w") as file:
-    file.write(str(result))
-# print(parser.parse(data))
+# with open("result.json", "w") as file:
+#     file.write(str(result))
