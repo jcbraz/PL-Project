@@ -3,6 +3,7 @@ import ply.yacc as yacc
 from tomljson.lexer._lexer import tokens
 from tomljson.utils._readfile import handlePath, readFile
 from tomljson.utils._format_toml import handleTableArrayFormat
+from tomljson.utils._json_handling import parserOutputToDict
 
 
 def p_document(p):
@@ -129,3 +130,6 @@ result = parser.parse(data)
 
 with open("result.json", "w") as file:
     file.write(str(result))
+
+with open("testing.json", "w") as json_file:
+    json_file.write(parserOutputToDict(result))
