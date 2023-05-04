@@ -1,16 +1,19 @@
 import json
 
+
 def handleNonString(elem) -> bool:
     if isinstance(elem, str) or isinstance(elem, int) or isinstance(elem, bool):
         return True
     else:
         return False
 
+
 def handleBrackets(elem) -> bool:
     if "[" in str(elem):
         return True
     else:
         return False
+
 
 def handleChildTable(table_header: str, element) -> bool:
     formatted_title = table_header.strip("[]")
@@ -20,57 +23,47 @@ def handleChildTable(table_header: str, element) -> bool:
         return False
 
 
+def breakingPoints(element) -> bool:
+    result = True
+    if isinstance(element, str):
+        if '[[' in element:
+            result = False
+    elif isinstance(element, list):
+        if '{' in element:
+            result = False
+
+    return result
+
+
+def gatherTableContent(table_header: str, index: int, listToIterate: list) -> dict:
+
+    section_content = {}
+    while breakingPoints(listToIterate[index]) == 1 or breakingPoints(listToIterate[index]) == 2:
+
+        if index >= len(listToIterate) - 1 or breakingPoints(listToIterate[index]) == 0:
+            break
+
+        if breakingPoints(listToIterate[index]) == 2:
+            if handleChildTable(table_header, listToIterate[index]):
+                section_content[listToIterate[index]] = gatherTableContent(listToIterate[index], index + 1, listToIterate[index + 1:])
+
+        else:
+            section_content[listToIterate[index]] = listToIterate[index + 1]
+            index += 2
+        # elif handleChildTable(listToIterate[index], ):
+        #     section_content[listToIterate[index]] = gatherTableContent(index + 1, listToIterate[index + 1:])
+    return section_content
+
+
 def fillTables(table_header: str, parserOutput: list):
+    
     table_content = {}
     header_index = parserOutput.index(table_header)
     start_index = header_index + 1
 
-    while start_index < len(parserOutput):
-        key = parserOutput[start_index]
-        if handleChildTable(table_header, key):
-            # parse nested table
-            nested_table_header = key
-            nested_table_content = fillTables(nested_table_header, parserOutput)
-            table_content[nested_table_header] = nested_table_content
-            start_index = parserOutput.index(nested_table_header) + 1
-        elif isinstance(key, list):
-            # parse array of tables
-            array_table_header = table_header + key[0].strip("[]")
-            array_table_content = []
-            i = start_index + 1
-            while i < len(parserOutput):
-                if parserOutput[i] == key:
-                    array_table_content.append(fillTables(array_table_header, parserOutput[start_index:i]))
-                    start_index = i + 1
-                elif handleChildTable(array_table_header, parserOutput[i]):
-                    # parse nested table
-                    nested_table_header = array_table_header + parserOutput[i]
-                    nested_table_content = fillTables(nested_table_header, parserOutput[i+1:])
-                    array_table_content.append({nested_table_header: nested_table_content})
-                    break
-                elif i == len(parserOutput) - 1:
-                    array_table_content.append(fillTables(array_table_header, parserOutput[start_index:]))
-                    start_index = len(parserOutput)
-                i += 1
-            table_content[array_table_header] = array_table_content
-        else:
-            # parse key-value pair
-            value = parserOutput[start_index + 1]
-            if handleBrackets(value):
-                # parse nested array
-                nested_array = []
-                i = start_index + 1
-                while i < len(parserOutput):
-                    nested_array.append(parserOutput[i])
-                    if parserOutput[i] == "}":
-                        break
-                    i += 1
-                value = nested_array
-            table_content[key] = value
-            start_index += 2
-
+    table_content[table_header] = gatherTableContent(table_header, start_index, parserOutput[start_index:])
+        
     return table_content
-
 
 
 def handleOutputToDict(parserOutput: list) -> dict:
@@ -84,8 +77,10 @@ def handleOutputToDict(parserOutput: list) -> dict:
                     current_key = elem.strip("[[]]")
                     global_dict[current_key] = []
                 else:
-                    current_key = elem.strip("[]")
-                    global_dict[current_key] = fillTables(elem, parserOutput)
+                    # table
+                    if '.' not in elem:
+                        current_key = elem.strip("[]")
+                        global_dict[current_key] = fillTables(elem, parserOutput[i:])
             elif "=" in elem:
                 verify_elem = parserOutput[i + 1]
                 if isinstance(verify_elem, list):
@@ -103,13 +98,13 @@ def handleOutputToDict(parserOutput: list) -> dict:
                                 else verify_elem[j].strip("=")
                             )
                             global_dict[current_key][new_key] = verify_elem[j + 1]
-                    else:
-                        current_key = (
-                            elem.strip(" =")
-                            if elem.find(" =") != -1
-                            else elem.strip("=")
-                        )
-                        global_dict[current_key] = verify_elem
+                    # else:
+                    #     current_key = (
+                    #         elem.strip(" =")
+                    #         if elem.find(" =") != -1
+                    #         else elem.strip("=")
+                    #     )
+                    #     global_dict[current_key] = verify_elem
 
     return global_dict
 
@@ -236,3 +231,59 @@ def printType(result):
 #         current_key = element[:-2]
 #     else:
 #         current_dict[current_key] = element
+
+
+# def fillTables(table_header: str, parserOutput: list):
+#     table_content = {}
+#     header_index = parserOutput.index(table_header)
+#     start_index = header_index + 1
+
+#     while start_index < len(parserOutput):
+#         if start_index >= len(parserOutput) - 1:
+#             break
+
+#         key = parserOutput[start_index]
+#         if handleChildTable(table_header, key):
+#             # parse nested table
+#             nested_table_header = key
+#             nested_table_content = fillTables(nested_table_header, parserOutput)
+#             table_content[nested_table_header] = nested_table_content
+#             start_index = parserOutput.index(nested_table_header) + 1
+#         elif isinstance(key, list):
+#             # parse array of tables
+#             array_table_header = table_header + key[0].strip("[]")
+#             array_table_content = []
+#             i = start_index + 1
+#             while i < len(parserOutput):
+#                 if parserOutput[i] == key:
+#                     array_table_content.append(fillTables(array_table_header, parserOutput[start_index:i]))
+#                     start_index = i + 1
+#                 elif handleChildTable(array_table_header, parserOutput[i]):
+#                     # parse nested table
+#                     nested_table_header = array_table_header + parserOutput[i]
+#                     nested_table_content = fillTables(nested_table_header, parserOutput[i+1:])
+#                     array_table_content.append({nested_table_header: nested_table_content})
+#                     break
+#                 elif i == len(parserOutput) - 1:
+#                     array_table_content.append(fillTables(array_table_header, parserOutput[start_index:]))
+#                     start_index = len(parserOutput)
+#                 i += 1
+#             table_content[array_table_header] = array_table_content
+#             start_index = i
+#         else:
+#             # parse key-value pair
+#             value = parserOutput[start_index + 1]
+#             if handleBrackets(value):
+#                 # parse nested array
+#                 nested_array = []
+#                 i = start_index + 1
+#                 while i < len(parserOutput):
+#                     nested_array.append(parserOutput[i])
+#                     if parserOutput[i] == "}":
+#                         break
+#                     i += 1
+#                 value = nested_array
+#             table_content[key] = value
+#             start_index += 2
+
+#     return table_content
