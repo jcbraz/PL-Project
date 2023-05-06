@@ -109,13 +109,10 @@ def _parser(toml_path: str):
 
     dirname = os.path.dirname(__file__)
     abs_path = os.path.abspath(dirname)
-
-    handledPath = handlePath(toml_path)
-
-    filepath = os.path.join(abs_path, handledPath[0])
-
-    for i in range(1, len(handledPath)):
-        filepath = os.path.join(filepath, handledPath[i])
+    
+    filepath = abs_path.split('/')
+    filepath = filepath[:-2]
+    filepath = '/'.join(filepath) + '/' + toml_path
 
     data = handleTableArrayFormat(readFile(filepath))
 
