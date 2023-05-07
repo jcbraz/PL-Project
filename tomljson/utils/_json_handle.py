@@ -7,8 +7,9 @@ class BreakPoints:
     def __init__(self):
         self.tables = []
         self.inline_tables = []
+        self.global_info = {}
 
-    def setBreakPoints(self, data: list):
+    def setBreakPoints(self, data):
         table_pattern = re.compile(r"\[+\w+(?:\.\w+)*\]+")
         self.tables = re.findall(table_pattern, str(data))
 
@@ -22,6 +23,9 @@ class BreakPoints:
 
     def getInlineTables(self):
         return self.inline_tables
+    
+    def getGlobalInfo(self):
+        return self.global_info
 
     def getTablesIndexes(self, data: list):
         indexes = []
@@ -152,6 +156,18 @@ def handleArrayTables(input_dict: dict):
     return return_dict
 
 
+def handleGlobalInfo(input_dict: dict, data: list) -> dict:
+    updated_dict = {}
+
+    breakpoints = BreakPoints()
+    breakpoints.setBreakPoints(data)
+    for i in range(0, breakpoints.getTablesIndexes(data)[0], 2):
+        updated_dict[data[i].split("=")[0].strip()] = data[i+1]
+    
+    updated_dict.update(input_dict)
+    return updated_dict
+
+
 def convertOutputToJson(data: list):
     data = handleInlineTables(data)
     tables_dict = injectTablesContent(data)
@@ -159,7 +175,8 @@ def convertOutputToJson(data: list):
     results = extractInfoFromDF(df)
     results = handleNestedTables(results)
     results = handleArrayTables(results)
-    return results
+    updated_results = handleGlobalInfo(results, data)
+    return updated_results
 
 
 # Convert results to json
