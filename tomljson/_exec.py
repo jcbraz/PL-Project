@@ -1,5 +1,18 @@
 from tomljson.parser._parser import _parser
 from tomljson.utils._json_handle import writeJsonFile
+from pathlib import Path
 
-result = _parser("../../model.toml")
-writeJsonFile(result, "model")
+def main():
+    input_folder = Path("./tomljson/inputs")
+    paths = [str(file) for file in input_folder.iterdir() if file.is_file()]
+    for path in paths:
+        print(f"Reading {path}")
+        try:
+            result = _parser(path)
+            writeJsonFile(result, path.split("/")[-1].split(".")[0])
+            print(f"Successfully! Outputed to the outputs folder")
+        except Exception as e:
+            print(f"Error: {e}")
+
+if __name__ == "__main__":
+    main()

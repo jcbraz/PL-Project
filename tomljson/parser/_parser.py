@@ -20,7 +20,10 @@ def _parser(toml_path: str):
         | table
         | inline_table
         | array_tables"""
-        p[0] = p[1]
+        if isinstance(p[1], list):
+            p[0] = p[1]
+        else:
+            p[0] = [p[1]]
 
     def p_array_tables(p):
         """array_tables : ARRAY_TABLES_HEADER content
@@ -109,14 +112,10 @@ def _parser(toml_path: str):
 
     dirname = os.path.dirname(__file__)
     abs_path = os.path.abspath(dirname)
-
-    handledPath = handlePath(toml_path)
-
-    filepath = os.path.join(abs_path, handledPath[0])
-
-    for i in range(1, len(handledPath)):
-        filepath = os.path.join(filepath, handledPath[i])
+    
+    filepath = abs_path.split('/')
+    filepath = filepath[:-2]
+    filepath = '/'.join(filepath) + '/' + toml_path
 
     data = handleTableArrayFormat(readFile(filepath))
-
     return parser.parse(data)
