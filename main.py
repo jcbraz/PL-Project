@@ -3,7 +3,7 @@ from pathlib import Path
 
 def initPackage() -> bool:
     try:
-        sys.path.append(str(Path(__file__).parent.parent))
+        sys.path.append(str(Path(__file__).parent) + "/tomljson")
     except Exception as e:
         print(f"Error: {e}")
         return False
