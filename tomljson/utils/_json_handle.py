@@ -6,17 +6,11 @@ import json
 class BreakPoints:
     def __init__(self):
         self.tables = []
-        self.inline_tables = []
         self.global_info = {}
 
     def setBreakPoints(self, data):
         table_pattern = re.compile(r"\[+\w+(?:\.\w+)*\]+")
         self.tables = re.findall(table_pattern, str(data))
-
-        for element in data:
-            if isinstance(element, list) and "{" in element:
-                index = data.index(element)
-                self.inline_tables.append(data[index - 1].split("=")[0].strip())
 
     def getTables(self):
         return self.tables
@@ -31,14 +25,6 @@ class BreakPoints:
         indexes = []
         for table in self.tables:
             indexes.append(data.index(table))
-        return indexes
-
-    def getInlineTablesIndexes(self, data: list):
-        indexes = []
-        for element in data:
-            if isinstance(element, list) and "{" in element:
-                indexes.append(data.index(element) - 1)
-
         return indexes
 
 
