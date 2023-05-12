@@ -167,5 +167,5 @@ def convertOutputToJson(data: list):
 
 # Convert results to json
 def writeJsonFile(data: dict, file_name: str):
-    with open(f"tomljson/outputs/{file_name}.json", "w") as f:
+    with open(f"./outputs/{file_name}.json", "w") as f:
         json.dump(convertOutputToJson(data), f, indent=4)
