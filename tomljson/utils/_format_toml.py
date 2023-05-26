@@ -1,3 +1,5 @@
+# This file contains functions to format TOML strings, more specifically, remove unnecessary whitespace and sort the keys.
+
 from tomlkit import parse, document, dumps
 import re
 

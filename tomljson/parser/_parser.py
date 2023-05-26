@@ -110,12 +110,14 @@ def _parser(toml_path: str):
 
     parser = yacc.yacc()
 
+    # Get absolute path of toml file
+
     dirname = os.path.dirname(__file__)
     abs_path = os.path.abspath(dirname)
-    
-    filepath = abs_path.split('/')
+
+    filepath = abs_path.split("/")
     filepath = filepath[:-2]
-    filepath = '/'.join(filepath) + '/' + toml_path
+    filepath = "/".join(filepath) + "/" + toml_path
 
     data = handleTableArrayFormat(readFile(filepath))
     return parser.parse(data)

@@ -1,3 +1,5 @@
+# This file contains functions to sucessfully convert the output string from the parser to a JSON format.
+
 import re
 import pandas as pd
 import json
@@ -17,7 +19,7 @@ class BreakPoints:
 
     def getInlineTables(self):
         return self.inline_tables
-    
+
     def getGlobalInfo(self):
         return self.global_info
 
@@ -148,8 +150,8 @@ def handleGlobalInfo(input_dict: dict, data: list) -> dict:
     breakpoints = BreakPoints()
     breakpoints.setBreakPoints(data)
     for i in range(0, breakpoints.getTablesIndexes(data)[0], 2):
-        updated_dict[data[i].split("=")[0].strip()] = data[i+1]
-    
+        updated_dict[data[i].split("=")[0].strip()] = data[i + 1]
+
     updated_dict.update(input_dict)
     return updated_dict
 

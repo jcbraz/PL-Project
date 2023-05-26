@@ -38,14 +38,11 @@ t_SPACE = r"\s+"
 t_ignore = " \t"
 
 
-# Add support for comments
-# initialize default state
 def t_ANY_COMMENT(t):
     r"\#.*"
     pass
 
 
-# Add support for dates
 def t_ANY_DATE(t):
     r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}([+-]\d{2}:\d{2})?"
     return t
@@ -83,35 +80,35 @@ def t_ANY_NEWLINE(t):
     t.lexer.lineno += len(t.value)
     pass
 
-
+# TOML Table indicator
 def t_TABLE_HEADER(t):
     r"\[\w*\]\n*?"
     t.lexer.begin("table")
     return t
 
-
+# TOML Array of Tables indicator
 def t_ARRAY_TABLES_HEADER(t):
     r"\[\[[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]*)*\]\]"
     return t
 
-
+# TOML Table indicator inside a Table
 def t_table_TABLE_HEADER(t):
     r"\[\w*\]\n*?"
     return t
 
-
+# TOML Child Table indicator
 def t_table_CHILD_HEADER(t):
     r"\[[a-zA-Z]+\.(?:[a-zA-Z]*\.)*[a-zA-Z]*\]"
     t.lexer.begin("child")
     return t
 
-
+# TOML Table indicator inside a Child Table
 def t_child_TABLE_HEADER(t):
     r"\[\w*\]\n*?"
     t.lexer.begin("table")
     return t
 
-
+# TOML Child Table indicator inside a Child Table
 def t_child_CHILD_HEADER(t):
     r"\[[a-zA-Z]+\.(?:[a-zA-Z]*\.)*[a-zA-Z]*\]"
     return t

@@ -1,6 +1,9 @@
+# Execute the parser and write the output to the outputs folder
+
 from pathlib import Path
 from tomljson.parser._parser import _parser
 from tomljson.utils._json_handle import writeJsonFile
+
 
 def exec():
     input_folder = Path("./inputs")
