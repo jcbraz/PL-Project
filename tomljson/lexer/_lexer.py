@@ -49,7 +49,7 @@ def t_ANY_DATE(t):
 
 
 def t_ANY_VARIABLE(t):
-    r"[a-zA-Z0-9_]+\s?=\s?"
+    r"[a-zA-Z0-9_\-]+\s?=\s?"
     if t.value[-2] == " ":
         t.value = t.value[:-2]
     else:
@@ -58,7 +58,7 @@ def t_ANY_VARIABLE(t):
 
 
 def t_ANY_STRING(t):
-    r"[\"'](?:\W?[a-zA-Z0-9])+[\"']"
+    r"[\"'].+[\"']"
     t.value = t.value[1:-1]
     return t
 
