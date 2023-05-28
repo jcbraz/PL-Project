@@ -2,7 +2,7 @@ import os
 import ply.yacc as yacc
 from tomljson.lexer._lexer import tokens
 from tomljson.utils._readfile import handlePath, readFile
-from tomljson.utils._format_toml import handleTableArrayFormat
+from tomljson.utils._format_toml import handleTableArrayFormat, sort_toml
 
 
 def _parser(toml_path: str):
@@ -119,5 +119,5 @@ def _parser(toml_path: str):
     filepath = filepath[:-2]
     filepath = "/".join(filepath) + "/" + toml_path
 
-    data = handleTableArrayFormat(readFile(filepath))
+    data = handleTableArrayFormat(sort_toml(readFile(filepath)))
     return parser.parse(data)
