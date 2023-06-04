@@ -1,4 +1,5 @@
-# toml-json, An easy convertion tool for converting .toml files to .json files
+# toml-json
+### An easy convertion tool for converting .toml files to .json files
 
 To get started:
 
