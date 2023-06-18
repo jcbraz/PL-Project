@@ -120,4 +120,8 @@ def _parser(toml_path: str):
     filepath = "/".join(filepath) + "/" + toml_path
 
     data = handleTableArrayFormat(sort_toml(readFile(filepath)))
+    # write data to file result.txt
+    with open("result.toml", "w") as f:
+        f.write(data)
+
     return parser.parse(data)

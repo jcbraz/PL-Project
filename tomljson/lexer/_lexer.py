@@ -59,7 +59,7 @@ def t_ANY_VARIABLE(t):
 
 def t_ANY_STRING(t):
     r"[\"'].+[\"']"
-    t.value = t.value[1:-1]
+    # t.value = t.value[1:-1]
     return t
 
 
@@ -82,35 +82,35 @@ def t_ANY_NEWLINE(t):
 
 # TOML Table indicator
 def t_TABLE_HEADER(t):
-    r"\[\w*\]\n*?"
+    r"\[.*\]\n*?"
     t.lexer.begin("table")
     return t
 
 # TOML Array of Tables indicator
 def t_ARRAY_TABLES_HEADER(t):
-    r"\[\[[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]*)*\]\]"
+    r"\[\.+(?:\..*)*\]\]"
     return t
 
 # TOML Table indicator inside a Table
 def t_table_TABLE_HEADER(t):
-    r"\[\w*\]\n*?"
+    r"\[.+\]\n*?"
     return t
 
 # TOML Child Table indicator
 def t_table_CHILD_HEADER(t):
-    r"\[[a-zA-Z]+\.(?:[a-zA-Z]*\.)*[a-zA-Z]*\]"
+    r"\[.+\.(?:.*\.)*.*\]"
     t.lexer.begin("child")
     return t
 
 # TOML Table indicator inside a Child Table
 def t_child_TABLE_HEADER(t):
-    r"\[\w*\]\n*?"
+    r"\[.+\]\n*?"
     t.lexer.begin("table")
     return t
 
 # TOML Child Table indicator inside a Child Table
 def t_child_CHILD_HEADER(t):
-    r"\[[a-zA-Z]+\.(?:[a-zA-Z]*\.)*[a-zA-Z]*\]"
+    r"\[.+\.(?:.*\.)*.*\]"
     return t
 
 
